@@ -1,0 +1,57 @@
+export const permissionKeys = [
+  'overview.view',
+  'checklist.view',
+  'restaurants.view',
+  'restaurants.manage',
+  'offers.view',
+  'offers.manage',
+  'redemptions.view',
+  'redemptions.reverse',
+  'fraud.view',
+  'fraud.manage',
+  'users.view',
+  'users.manage',
+  'moderation.view',
+  'moderation.manage',
+  'billing.view',
+  'billing.manage',
+  'settings.view',
+  'settings.manage',
+  'content.view',
+  'content.manage',
+  'master_data.view',
+  'master_data.manage',
+  'notifications.view',
+  'notifications.send',
+  'integrations.view',
+  'integrations.manage',
+  'data_requests.view',
+  'data_requests.manage',
+  'team.view',
+  'team.manage',
+  'audit.view',
+  'boosts.view',
+  'boosts.manage',
+] as const;
+
+export type PermissionKey = (typeof permissionKeys)[number];
+
+export const permissionGroups: Record<string, readonly PermissionKey[]> = {
+  Overview: ['overview.view', 'checklist.view'],
+  Restaurants: ['restaurants.view', 'restaurants.manage'],
+  Offers: ['offers.view', 'offers.manage'],
+  Redemptions: ['redemptions.view', 'redemptions.reverse'],
+  Fraud: ['fraud.view', 'fraud.manage'],
+  Users: ['users.view', 'users.manage', 'moderation.view', 'moderation.manage'],
+  Billing: ['billing.view', 'billing.manage'],
+  Settings: ['settings.view', 'settings.manage'],
+  Content: ['content.view', 'content.manage', 'master_data.view', 'master_data.manage'],
+  Notifications: ['notifications.view', 'notifications.send'],
+  Integrations: ['integrations.view', 'integrations.manage'],
+  Privacy: ['data_requests.view', 'data_requests.manage'],
+  Team: ['team.view', 'team.manage', 'audit.view'],
+  Boosts: ['boosts.view', 'boosts.manage'],
+};
+
+export const restaurantRoles = ['owner', 'manager', 'cashier'] as const;
+export type RestaurantRole = (typeof restaurantRoles)[number];

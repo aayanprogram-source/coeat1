@@ -1,0 +1,69 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "ignoreDependencies": [
+    "eslint-config-prettier",
+    "eslint-plugin-react-hooks",
+    "tslib"
+  ],
+  "workspaces": {
+    ".": {
+      "entry": [
+        "eslint.config.js"
+      ]
+    },
+    "apps/admin": {
+      "entry": [
+        "src/app/**/*.tsx",
+        "src/middleware.ts",
+        "playwright.config.ts",
+        "e2e/**/*.ts"
+      ]
+    },
+    "apps/restaurant": {
+      "entry": [
+        "src/app/**/*.tsx",
+        "src/middleware.ts",
+        "playwright.config.ts",
+        "e2e/**/*.ts"
+      ]
+    },
+    "apps/mobile": {
+      "entry": [
+        "app/**/*.tsx",
+        "app.config.ts"
+      ]
+    },
+    "packages/db": {
+      "entry": [
+        "scripts/*.ts",
+        "tests/**/*.test.ts",
+        "tests/setup.ts"
+      ],
+      "ignore": [
+        "supabase/functions/**",
+        "src/database.types.ts"
+      ]
+    },
+    "packages/core": {
+      "entry": [
+        "src/index.ts"
+      ]
+    },
+    "packages/i18n": {
+      "entry": [
+        "src/index.ts"
+      ]
+    },
+    "packages/ui-tokens": {
+      "entry": [
+        "src/index.ts",
+        "src/tailwind-preset.ts"
+      ]
+    },
+    "packages/ui-web": {
+      "entry": [
+        "src/index.ts"
+      ]
+    }
+  }
+}

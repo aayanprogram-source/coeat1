@@ -1,0 +1,35 @@
+{
+  "name": "datapal",
+  "private": true,
+  "packageManager": "pnpm@9.15.4",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev --parallel",
+    "typecheck": "turbo run typecheck",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "test:e2e": "turbo run test:e2e",
+    "format": "prettier --check .",
+    "format:write": "prettier --write .",
+    "unused": "knip",
+    "db:migrate": "pnpm --filter @datapal/db migrate",
+    "db:test": "pnpm --filter @datapal/db test",
+    "db:types": "pnpm --filter @datapal/db gen:types",
+    "db:settings": "pnpm --filter @datapal/db gen:settings",
+    "bootstrap:superadmin": "pnpm --filter @datapal/db bootstrap:superadmin",
+    "ci": "pnpm typecheck && pnpm lint && pnpm format && pnpm test && pnpm unused && pnpm build"
+  },
+  "devDependencies": {
+    "@eslint/js": "9.39.0",
+    "eslint": "9.39.5",
+    "eslint-config-prettier": "10.1.8",
+    "eslint-plugin-react-hooks": "7.0.1",
+    "globals": "16.4.0",
+    "knip": "5.88.1",
+    "prettier": "3.10.1",
+    "turbo": "2.11.11",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.72.2"
+  }
+}

@@ -1,0 +1,14 @@
+.env
+node_modules/
+.turbo/
+dist/
+.next/
+out/
+.expo/
+coverage/
+playwright-report/
+test-results/
+*.tsbuildinfo
+packages/db/.pg/
+packages/db/supabase/.temp/
+.DS_Store

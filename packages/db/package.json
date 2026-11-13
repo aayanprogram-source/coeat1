@@ -1,0 +1,33 @@
+{
+  "name": "@datapal/db",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "migrate": "tsx --env-file=../../.env scripts/migrate.ts",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src scripts tests",
+    "gen:settings": "tsx scripts/gen-settings.ts",
+    "gen:types": "tsx scripts/gen-types.ts",
+    "bootstrap:superadmin": "tsx --env-file=../../.env scripts/bootstrap-superadmin.ts"
+  },
+  "dependencies": {
+    "pg": "8.16.3",
+    "@datapal/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.5",
+    "@types/pg": "8.15.5",
+    "embedded-postgres": "17.11.0-beta.19",
+    "tsx": "4.23.15",
+    "typescript": "5.9.3",
+    "vitest": "3.2.7",
+    "@supabase/supabase-js": "2.119.0"
+  }
+}

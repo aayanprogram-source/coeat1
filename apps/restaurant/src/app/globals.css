@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-background font-body text-body text-ink antialiased;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  [role='dialog'],
+  [role='dialog'] * {
+    visibility: visible;
+  }
+  [role='dialog'] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    max-height: none;
+    transform: none;
+    border: none;
+    box-shadow: none;
+  }
+  [role='dialog'] button {
+    display: none;
+  }
+}

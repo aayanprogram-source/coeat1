@@ -1,0 +1,35 @@
+# Local development configuration for the Supabase CLI.
+# The hosted project is configured in the Supabase dashboard as described in docs/DEPLOYMENT.md.
+# Secrets are read from the environment, never written here.
+project_id = "datapal"
+
+[auth]
+enable_signup = true
+jwt_expiry = 3600
+enable_refresh_token_rotation = true
+
+[auth.sms]
+enable_signup = true
+enable_confirmations = true
+max_frequency = "60s"
+
+[auth.hook.send_sms]
+enabled = true
+uri = "http://host.docker.internal:54321/functions/v1/send-sms-hook"
+secrets = "env(SEND_SMS_HOOK_SECRET)"
+
+[auth.mfa.totp]
+enroll_enabled = true
+verify_enabled = true
+
+[functions.send-sms-hook]
+verify_jwt = false
+
+[functions.payments-webhook]
+verify_jwt = false
+
+[functions.deliver-push]
+verify_jwt = false
+
+[functions.purge-accounts]
+verify_jwt = false

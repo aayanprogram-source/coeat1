@@ -1,0 +1,7 @@
+node_modules
+.next
+.turbo
+dist
+.expo
+pnpm-lock.yaml
+packages/core/src/database.types.ts
