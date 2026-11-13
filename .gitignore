@@ -12,3 +12,7 @@ test-results/
 packages/db/.pg/
 packages/db/supabase/.temp/
 .DS_Store
+
+dist/
+.expo/
+expo-env.d.ts

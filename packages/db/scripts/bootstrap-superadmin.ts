@@ -7,7 +7,7 @@ import pg from 'pg';
 function ask(question: string, hidden = false): Promise<string> {
   let muted = false;
   const output = new Writable({
-    write(chunk, _encoding, callback) {
+    write(chunk: string | Uint8Array, _encoding, callback) {
       if (!muted) process.stdout.write(chunk);
       callback();
     },

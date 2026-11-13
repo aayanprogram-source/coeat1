@@ -2,10 +2,12 @@ import { admin } from './en/admin';
 import { adminScreens } from './en/admin-screens';
 import { common } from './en/common';
 import { customer } from './en/customer';
+import { customerScreens } from './en/customer-screens';
 import { errors } from './en/errors';
 import { restaurant } from './en/restaurant';
+import { restaurantScreens } from './en/restaurant-screens';
 
-export const baseStrings = { ...common, ...errors, ...customer, ...restaurant, ...admin, ...adminScreens } as const;
+export const baseStrings = { ...common, ...errors, ...customer, ...restaurant, ...admin, ...adminScreens, ...restaurantScreens, ...customerScreens } as const;
 export type StringKey = keyof typeof baseStrings;
 export const stringKeys = Object.keys(baseStrings) as StringKey[];
 

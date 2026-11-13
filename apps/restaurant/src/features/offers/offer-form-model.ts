@@ -54,8 +54,8 @@ export function fromOffer(o: {
   return {
     title: o.title,
     discountPercent: o.discount_percent,
-    capInr: paiseToRupees(Number(o.discount_cap_paise)),
-    minBillInr: paiseToRupees(Number(o.min_bill_paise)),
+    capInr: paiseToRupees(o.discount_cap_paise),
+    minBillInr: paiseToRupees(o.min_bill_paise),
     totalCodes: o.total_codes,
     startsAt: toLocalInput(o.starts_at),
     endsAt: toLocalInput(o.ends_at),
@@ -102,7 +102,7 @@ export function offerResolver(bounds: OfferBounds): Resolver<OfferFormValues> {
     const errors: FieldErrors<OfferFormValues> = {};
     for (const issue of parsed.error.issues) {
       const name = fieldOf[String(issue.path[0])];
-      if (name && !errors[name]) errors[name] = { type: 'validate', message: issue.message } as never;
+      if (name && !errors[name]) errors[name] = { type: 'validate', message: issue.message };
     }
     return { values: {}, errors };
   };

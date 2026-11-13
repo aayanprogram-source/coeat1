@@ -28,14 +28,14 @@ export function OfferDialog({ offer, onClose }: { offer: OfferRow | 'new' | null
 
   const run = (andSubmit: boolean) =>
     form.handleSubmit(async (v) => {
-      const id = await save.mutateAsync({ p_restaurant_id: restaurant.id, p_id: offer !== 'new' && offer ? offer.id : undefined, p_data: toPayload(v) as never });
+      const id = await save.mutateAsync({ p_restaurant_id: restaurant.id, p_id: offer !== 'new' && offer ? offer.id : undefined, p_data: toPayload(v) });
       if (andSubmit && typeof id === 'string') await submit.mutateAsync({ p_offer_id: id });
       onClose();
     })();
 
   const range = (min: string, max: string) => t('rd.offers.bounds', { min, max });
   const number = (name: 'discountPercent' | 'capInr' | 'minBillInr' | 'totalCodes' | 'groupCreditCap') => form.register(name, { valueAsNumber: true });
-  const err = (name: keyof OfferFormValues) => (errors[name] ? String(errors[name]?.message ?? t('common.invalid_value')) : undefined);
+  const err = (name: keyof OfferFormValues) => (errors[name] ? (errors[name].message ?? t('common.invalid_value')) : undefined);
 
   return (
     <Dialog open={offer !== null} onOpenChange={(o) => !o && onClose()} title={offer === 'new' ? t('rd.offers.new') : t('rd.offers.edit')} closeLabel={t('common.close')}>

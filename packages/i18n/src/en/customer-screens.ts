@@ -1,0 +1,15 @@
+export const customerScreens = {
+  'feed.invite_message': '{name} invited you. See where friends eat and get your own personal code: {link}',
+  'feed.open_story': 'Open the story by {name}',
+  'group.open_banner': 'Your table at {restaurant} is open',
+  'onboarding.city': 'Your city',
+  'onboarding.handle_rule': 'Use 3 to 24 lowercase letters, numbers or underscores.',
+  'onboarding.no_matches': 'None of your contacts are here yet. Invite them from your feed.',
+  'onboarding.otp_wrong': 'That code did not work. Try again.',
+  'profile.diary_empty': 'Meals you post appear here, even after the story expires.',
+  'profile.faqs_empty': 'No questions have been published yet.',
+  'profile.marketing': 'Offers and news from the platform',
+  'profile.requested': 'Requested',
+  'story.reported': 'Thanks. The platform team will review this story.',
+  'wallet.show_staff': 'Show this screen to the restaurant staff',
+} as const;

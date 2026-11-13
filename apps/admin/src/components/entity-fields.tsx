@@ -2,7 +2,7 @@
 
 import { Checkbox, FormField, Input, Select, Textarea, useRows, useT } from '@datapal/ui-web';
 import type { StringKey } from '@datapal/i18n';
-import { Controller, type FieldValues, type UseFormReturn } from 'react-hook-form';
+import { Controller, type UseFormReturn } from 'react-hook-form';
 
 export type FieldSpec =
   | { name: string; label: StringKey; type: 'text' | 'number' | 'textarea' }
@@ -11,7 +11,7 @@ export type FieldSpec =
   | { name: string; label: StringKey; type: 'cities' };
 
 function CityChoices({ value, onChange }: { value: string[]; onChange: (next: string[]) => void }) {
-  const cities = useRows<{ id: string; name: string }[]>(['rows', 'cities', 'choices'], (a) => a.from('cities').select('id, name').order('name') as never);
+  const cities = useRows<{ id: string; name: string }[]>(['rows', 'cities', 'choices'], (a) => a.from('cities').select('id, name').order('name'));
   return (
     <div className="flex flex-col">
       {(cities.data ?? []).map((c) => (
@@ -26,7 +26,7 @@ function CityChoices({ value, onChange }: { value: string[]; onChange: (next: st
   );
 }
 
-export function EntityFields({ fields, form }: { fields: FieldSpec[]; form: UseFormReturn<FieldValues> }) {
+export function EntityFields({ fields, form }: { fields: FieldSpec[]; form: UseFormReturn }) {
   const t = useT();
   const errors = form.formState.errors;
   return (

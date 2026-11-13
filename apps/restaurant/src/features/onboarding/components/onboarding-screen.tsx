@@ -36,7 +36,7 @@ export function OnboardingScreen() {
 
   const loading = config.isLoading || mine.isLoading || (restaurantId !== null && draft.isLoading);
   const d = draft.data;
-  const initial: DetailsValues = d ? { name: d.name, city_id: d.city_id, cuisine_ids: d.cuisine_ids, address: d.address, lat: d.lat, lng: d.lng, phone: d.phone, upi_id: d.upi_id ?? '' } : blank;
+  const initial: DetailsValues = d ? { name: d.name, city_id: d.city_id, cuisine_ids: d.cuisine_ids, address: d.address, lat: d.lat, lng: d.lng, phone: d.phone, upi_id: d.upi_id } : blank;
 
   return (
     <main className="mx-auto w-full max-w-2xl px-4 py-10">

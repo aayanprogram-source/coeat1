@@ -31,5 +31,6 @@ export { ApiProvider, useApi } from './api-provider';
 export { useRows, useRpc, useRpcMutation } from './use-rpc';
 export type { RpcMutationOptions } from './use-rpc';
 export { ConfigListener } from './config-listener';
+export { invokeFunction } from './invoke-function';
 export { AuthPage } from './auth-page';
 export { StatusChip } from './status-chip';

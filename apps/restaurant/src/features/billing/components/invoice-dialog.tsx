@@ -47,16 +47,16 @@ export function InvoiceDialog({ invoiceId, onClose }: { invoiceId: string | null
               {d.lines.map((l, i) => (
                 <tr key={i} className="border-t border-line">
                   <td className="py-2">{l.kind === 'boost_fee' ? t('rd.billing.kind_boost_fee') : `${t('rd.billing.kind_referral_fee')} × ${l.count}`}</td>
-                  <td className="py-2 text-right">{formatPaise(Number(l.fee_paise))}</td>
-                  <td className="py-2 text-right">{formatPaise(Number(l.gst_paise))}</td>
+                  <td className="py-2 text-right">{formatPaise(l.fee_paise)}</td>
+                  <td className="py-2 text-right">{formatPaise(l.gst_paise)}</td>
                 </tr>
               ))}
             </tbody>
             <tfoot>
               <tr className="border-t border-line">
                 <th scope="row" className="py-2">{t('common.total')} ({d.invoice.gst_percent}% GST)</th>
-                <td className="py-2 text-right">{formatPaise(Number(d.invoice.subtotal_paise))}</td>
-                <td className="py-2 text-right font-medium">{formatPaise(Number(d.invoice.total_paise))}</td>
+                <td className="py-2 text-right">{formatPaise(d.invoice.subtotal_paise)}</td>
+                <td className="py-2 text-right font-medium">{formatPaise(d.invoice.total_paise)}</td>
               </tr>
             </tfoot>
           </table>

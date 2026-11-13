@@ -3,7 +3,7 @@
 import { formatCount, formatPaise } from '@datapal/core';
 import { Card, CardTitle, ErrorState, KpiCard, PageHeader, TrendChart, useApi, useRows, useT } from '@datapal/ui-web';
 import { Banknote, Receipt, ShoppingBag, Star, UserPlus } from 'lucide-react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRestaurant } from '@/components/restaurant-context';
 import { RoleScreen } from '@/components/role-screen';
@@ -26,12 +26,12 @@ export function OverviewScreen() {
   const api = useApi();
   const client = useQueryClient();
   const { restaurant } = useRestaurant();
-  const since = new Date(Date.now() - THIRTY_DAYS).toISOString().slice(0, 10);
+  const [since] = useState(() => new Date(Date.now() - THIRTY_DAYS).toISOString().slice(0, 10));
   const stats = useRows<Day[]>(['rows', 'daily', restaurant.id], (a) =>
     a.from('restaurant_daily_stats').select('day, redemptions, new_customers, avg_bill_paise, fee_paise').eq('restaurant_id', restaurant.id).gte('day', since).order('day') as never,
   );
   const rating = useRows<{ avg_rating: number | null } | null>(['rows', 'rating', restaurant.id], (a) =>
-    a.from('restaurant_ratings').select('avg_rating').eq('restaurant_id', restaurant.id).maybeSingle() as never,
+    a.from('restaurant_ratings').select('avg_rating').eq('restaurant_id', restaurant.id).maybeSingle(),
   );
 
   // New redemptions reach this screen as they happen, so the counter team and the owner see the same numbers.
@@ -51,9 +51,9 @@ export function OverviewScreen() {
   const days = stats.data ?? [];
   const total = (pick: (d: Day) => number) => days.reduce((sum, d) => sum + pick(d), 0);
   const monthPrefix = new Date().toISOString().slice(0, 7);
-  const feesThisMonth = days.filter((d) => d.day.startsWith(monthPrefix)).reduce((sum, d) => sum + Number(d.fee_paise), 0);
+  const feesThisMonth = days.filter((d) => d.day.startsWith(monthPrefix)).reduce((sum, d) => sum + d.fee_paise, 0);
   const redemptions = total((d) => d.redemptions);
-  const weightedBill = redemptions === 0 ? 0 : Math.round(days.reduce((sum, d) => sum + Number(d.avg_bill_paise) * d.redemptions, 0) / redemptions);
+  const weightedBill = redemptions === 0 ? 0 : Math.round(days.reduce((sum, d) => sum + d.avg_bill_paise * d.redemptions, 0) / redemptions);
   const ready = stats.data !== undefined;
 
   return (

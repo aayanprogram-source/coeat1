@@ -35,7 +35,7 @@ export function BoostsScreen() {
   const setState = useRpcMutation('set_boost_state', options);
   const manage = can('boosts.manage');
 
-  const columns: ColumnDef<Boost, unknown>[] = [
+  const columns: ColumnDef<Boost>[] = [
     { header: t('sa.offers.restaurant'), accessorKey: 'restaurant' },
     { header: t('rd.boosts.offer'), accessorKey: 'offer' },
     { header: t('rd.boosts.city'), accessorKey: 'city' },
@@ -44,7 +44,7 @@ export function BoostsScreen() {
     { header: t('rd.boosts.impressions'), cell: ({ row }) => formatCount(row.original.impressions) },
     { header: t('rd.boosts.taps'), cell: ({ row }) => formatCount(row.original.taps) },
     { header: t('rd.boosts.redemptions'), cell: ({ row }) => formatCount(row.original.redemptions) },
-    { header: t('sa.boosts.revenue'), cell: ({ row }) => formatPaise(Number(row.original.charged_paise)) },
+    { header: t('sa.boosts.revenue'), cell: ({ row }) => formatPaise(row.original.charged_paise) },
     { header: t('common.status'), cell: ({ row }) => <StatusChip status={row.original.status} /> },
     {
       id: 'actions',

@@ -74,7 +74,7 @@ export function LevelsPanel() {
         <FormField label={t('rd.promoters.label')}>
           <Input value={draft.label} onChange={(e) => setDraft({ ...draft, label: e.target.value })} />
         </FormField>
-        <Button icon={<Plus className="h-4 w-4" aria-hidden />} disabled={!parsed.success || !percentOk} loading={save.isPending} onClick={() => save.mutate({ p_restaurant_id: restaurant.id, p_data: draft as never }, { onSuccess: () => setDraft(blank) })}>
+        <Button icon={<Plus className="h-4 w-4" aria-hidden />} disabled={!parsed.success || !percentOk} loading={save.isPending} onClick={() => save.mutate({ p_restaurant_id: restaurant.id, p_id: undefined, p_data: draft }, { onSuccess: () => setDraft(blank) })}>
           {t('rd.promoters.add_level')}
         </Button>
       </Card>

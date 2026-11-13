@@ -12,7 +12,7 @@ interface Agreement {
 export function AgreementStep({ restaurantId, onSaved }: { restaurantId: string; onSaved: () => void }) {
   const t = useT();
   const [agreed, setAgreed] = useState(false);
-  const doc = useRows<Agreement | null>(['rows', 'merchant-agreement'], (api) => api.from('legal_documents').select('version, title, body').eq('kind', 'merchant_agreement').not('published_at', 'is', null).order('version', { ascending: false }).limit(1).maybeSingle() as never);
+  const doc = useRows<Agreement | null>(['rows', 'merchant-agreement'], (api) => api.from('legal_documents').select('version, title, body').eq('kind', 'merchant_agreement').not('published_at', 'is', null).order('version', { ascending: false }).limit(1).maybeSingle());
   const accept = useRpcMutation('accept_merchant_agreement');
 
   if (doc.isLoading) return <Skeleton className="h-48 w-full" />;

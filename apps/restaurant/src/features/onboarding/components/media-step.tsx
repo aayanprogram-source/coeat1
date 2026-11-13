@@ -42,7 +42,7 @@ export function MediaStep({ restaurantId, logoUrl, coverUrl, onSaved }: { restau
         if (error) throw error;
         paths[`${slot}_path`] = path;
       }
-      if (Object.keys(paths).length > 0) await update.mutateAsync({ p_restaurant_id: restaurantId, p_details: paths as never });
+      if (Object.keys(paths).length > 0) await update.mutateAsync({ p_restaurant_id: restaurantId, p_details: paths });
       onSaved();
     } catch {
       toast.error(t('errors.unknown'));

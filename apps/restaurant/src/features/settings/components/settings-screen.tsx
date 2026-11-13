@@ -39,7 +39,7 @@ export function SettingsScreen() {
     );
   }
 
-  const patch = (data: Record<string, unknown>) => save.mutate({ p_restaurant_id: restaurant.id, p_details: data as never });
+  const patch = (data: Record<string, unknown>) => save.mutate({ p_restaurant_id: restaurant.id, p_details: data });
   const hoursValid = weeklyHours.safeParse(draft.hours).success;
 
   return (

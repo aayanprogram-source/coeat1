@@ -29,10 +29,10 @@ export function EntityManager({ config, embedded = false }: { config: EntityConf
   const t = useT();
   const [editing, setEditing] = useState<{ id: string | null; values: FieldValues } | null>(null);
   const key = ['rows', config.table];
-  const rows = useRows<Record<string, unknown>[]>(key, (a) => a.from(config.table as 'cities').select('*').order(config.order as 'name').limit(500) as never);
+  const rows = useRows<Record<string, unknown>[]>(key, (a) => a.from(config.table as 'cities').select('*').order(config.order as 'name').limit(500));
   const save = useRpcMutation('admin_save', { invalidate: [key], success: t('common.saved') });
   const remove = useRpcMutation('admin_delete', { invalidate: [key], success: t('common.deleted') });
-  const form = useForm<FieldValues>({ resolver: zodResolver(config.schema) as Resolver<FieldValues>, defaultValues: config.defaults });
+  const form = useForm({ resolver: zodResolver(config.schema) as Resolver, defaultValues: config.defaults });
 
   const open = (id: string | null, values: FieldValues) => {
     form.reset(values);
@@ -40,16 +40,16 @@ export function EntityManager({ config, embedded = false }: { config: EntityConf
   };
 
   const submit = form.handleSubmit(async (values) => {
-    await save.mutateAsync({ p_entity: config.entity, p_id: editing?.id ?? undefined, p_data: values as never });
+    await save.mutateAsync({ p_entity: config.entity, p_id: editing?.id ?? undefined, p_data: values });
     setEditing(null);
   });
 
-  const columns: ColumnDef<Record<string, unknown>, unknown>[] = [
-    ...config.columns.map<ColumnDef<Record<string, unknown>, unknown>>((c) => ({
+  const columns: ColumnDef<Record<string, unknown>>[] = [
+    ...config.columns.map<ColumnDef<Record<string, unknown>>>((c) => ({
       header: t(c.label),
       accessorKey: c.key,
       cell: ({ getValue }) =>
-        c.kind === 'bool' ? <Chip tone={getValue() ? 'success' : 'neutral'}>{getValue() ? t('common.yes') : t('common.no')}</Chip> : String(getValue() ?? ''),
+        c.kind === 'bool' ? <Chip tone={getValue() ? 'success' : 'neutral'}>{getValue() ? t('common.yes') : t('common.no')}</Chip> : formatCell(getValue()),
     })),
     {
       id: 'actions',
@@ -94,6 +94,11 @@ export function EntityManager({ config, embedded = false }: { config: EntityConf
       </Dialog>
     </section>
   );
+}
+
+function formatCell(value: unknown): string {
+  if (value === null || value === undefined) return '';
+  return typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean' ? String(value) : JSON.stringify(value);
 }
 
 function pick(row: Record<string, unknown>, fields: FieldSpec[]): FieldValues {

@@ -24,7 +24,7 @@ export function BoostDialog({ open, onClose }: { open: boolean; onClose: () => v
   const [starts, setStarts] = useState('');
   const [ends, setEnds] = useState('');
   const config = useRpc<AppConfig>('app_config', {});
-  const offers = useRows<ActiveOffer[]>(['rows', 'active-offers', restaurant.id], (api) => api.from('offers').select('id, title, codes_issued, total_codes').eq('restaurant_id', restaurant.id).eq('status', 'active') as never, open);
+  const offers = useRows<ActiveOffer[]>(['rows', 'active-offers', restaurant.id], (api) => api.from('offers').select('id, title, codes_issued, total_codes').eq('restaurant_id', restaurant.id).eq('status', 'active'), open);
   const ready = starts !== '' && ends !== '' && new Date(ends) > new Date(starts) && cityId !== '';
   const quote = useRpc<BoostQuote>('quote_boost', { p_restaurant_id: restaurant.id, p_city: cityId, p_starts: toIso(starts), p_ends: toIso(ends) }, { enabled: open && ready });
   const create = useRpcMutation('create_boost', { invalidate: [['rows', 'boost_report']], success: t('rd.boosts.submitted') });

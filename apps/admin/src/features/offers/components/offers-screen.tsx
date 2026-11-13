@@ -34,11 +34,11 @@ export function OffersScreen() {
   const end = useRpcMutation('end_offer', invalidate);
   const manage = can('offers.manage');
 
-  const columns: ColumnDef<Row, unknown>[] = [
+  const columns: ColumnDef<Row>[] = [
     { header: t('sa.offers.restaurant'), accessorKey: 'restaurant' },
     { header: t('sa.offers.title'), accessorKey: 'title' },
-    { header: t('sa.offers.discount'), cell: ({ row }) => `${row.original.discount_percent}% · ${formatPaise(Number(row.original.discount_cap_paise))}` },
-    { header: t('sa.offers.min_bill'), cell: ({ row }) => formatPaise(Number(row.original.min_bill_paise)) },
+    { header: t('sa.offers.discount'), cell: ({ row }) => `${row.original.discount_percent}% · ${formatPaise(row.original.discount_cap_paise)}` },
+    { header: t('sa.offers.min_bill'), cell: ({ row }) => formatPaise(row.original.min_bill_paise) },
     { header: t('sa.offers.codes'), cell: ({ row }) => `${row.original.codes_issued}/${row.original.total_codes}` },
     { header: t('sa.offers.ends'), cell: ({ row }) => formatDateIst(row.original.ends_at) },
     { header: t('common.status'), cell: ({ row }) => <StatusChip status={row.original.status} /> },

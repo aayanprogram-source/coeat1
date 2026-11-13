@@ -1,6 +1,6 @@
 'use client';
 
-import { stringKeys, baseStrings, type StringKey } from '@datapal/i18n';
+import { stringKeys, baseStrings } from '@datapal/i18n';
 import { Button, Card, FormField, Input, Skeleton, useRows, useRpc, useRpcMutation, useT } from '@datapal/ui-web';
 import { useState } from 'react';
 import { useCan } from '@/components/admin-context';
@@ -13,7 +13,7 @@ export function TranslationsPanel() {
   const [locale, setLocale] = useState('en');
   const [search, setSearch] = useState('');
   const [drafts, setDrafts] = useState<Record<string, string>>({});
-  const overrides = useRows<{ key: string; value: string }[]>(['rows', 'translations', locale], (api) => api.from('translations').select('key, value').eq('locale', locale) as never);
+  const overrides = useRows<{ key: string; value: string }[]>(['rows', 'translations', locale], (api) => api.from('translations').select('key, value').eq('locale', locale));
   const missing = useRpc<string[]>('missing_translation_keys', { p_locale: locale, p_keys: stringKeys });
   const invalidate = [['rows', 'translations'], ['rpc', 'missing_translation_keys'], ['rpc', 'app_config']];
   const save = useRpcMutation('save_translation', { invalidate, success: t('common.saved') });
@@ -44,13 +44,13 @@ export function TranslationsPanel() {
             <li key={key}>
               <Card className="flex flex-col gap-2">
                 <p className="break-all text-caption text-muted">{key}</p>
-                <p className="text-body text-ink">{baseStrings[key as StringKey]}</p>
+                <p className="text-body text-ink">{baseStrings[key]}</p>
                 <FormField label={t('sa.content.override')}>
                   <Input value={value} disabled={!manage} onChange={(e) => setDrafts({ ...drafts, [key]: e.target.value })} />
                 </FormField>
                 {manage ? (
                   <div className="flex gap-2">
-                    <Button variant="secondary" disabled={!value.trim() || value === override} loading={save.isPending && save.variables?.p_key === key} onClick={() => save.mutate({ p_key: key, p_locale: locale, p_value: value })}>
+                    <Button variant="secondary" disabled={!value.trim() || value === override} loading={save.isPending && save.variables.p_key === key} onClick={() => save.mutate({ p_key: key, p_locale: locale, p_value: value })}>
                       {t('common.save')}
                     </Button>
                     {override !== undefined ? (

@@ -20,8 +20,8 @@ export function RolesPanel() {
   const t = useT();
   const can = useCan();
   const [editing, setEditing] = useState<{ id: string | null; name: string; permissions: string[] } | null>(null);
-  const roles = useRows<Role[]>(['rows', 'admin_roles'], (api) => api.from('admin_roles').select('id, name, is_system').order('name') as never);
-  const perms = useRows<RolePermission[]>(['rows', 'role_permissions'], (api) => api.from('role_permissions').select('role_id, permission') as never);
+  const roles = useRows<Role[]>(['rows', 'admin_roles'], (api) => api.from('admin_roles').select('id, name, is_system').order('name'));
+  const perms = useRows<RolePermission[]>(['rows', 'role_permissions'], (api) => api.from('role_permissions').select('role_id, permission'));
   const save = useRpcMutation('save_admin_role', { invalidate: [['rows', 'admin_roles'], ['rows', 'role_permissions']], success: t('common.saved') });
   const manage = can('team.manage');
 

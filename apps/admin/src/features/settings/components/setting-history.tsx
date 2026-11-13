@@ -34,7 +34,7 @@ export function SettingHistory({ settingKey, canEdit, onClose }: { settingKey: s
               </p>
             </div>
             {canEdit && settingKey && row.before && validateSettingValue(settingKey, row.before.value).ok ? (
-              <Button variant="secondary" loading={update.isPending} onClick={() => update.mutate({ p_key: settingKey, p_value: row.before?.value as never })}>
+              <Button variant="secondary" loading={update.isPending} onClick={() => update.mutate({ p_key: settingKey, p_value: row.before?.value })}>
                 {t('sa.settings.rollback')}
               </Button>
             ) : null}

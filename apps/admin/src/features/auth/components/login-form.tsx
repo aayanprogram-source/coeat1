@@ -27,7 +27,7 @@ export function LoginForm() {
       return;
     }
     const { data, error } = await api.auth.signInWithPassword(values);
-    if (error || !data.user) {
+    if (error) {
       await api.rpc('login_record', { p_email: values.email, p_success: false });
       setMessage(t('sa.auth.invalid'));
       return;

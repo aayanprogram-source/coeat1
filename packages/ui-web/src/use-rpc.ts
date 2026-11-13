@@ -58,7 +58,7 @@ export function useRpcMutation<K extends FunctionName>(name: K, options: RpcMuta
     mutationFn: async (args) => {
       const { data, error } = await api.rpc(name, args as never);
       if (error) throw new ApiError(error.message);
-      return data as DbFunctions[K]['Returns'];
+      return data;
     },
     onSuccess: async () => {
       if (options.success) toast.success(options.success);

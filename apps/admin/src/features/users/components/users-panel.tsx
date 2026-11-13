@@ -27,7 +27,7 @@ export function UsersPanel() {
   const query = useRpc<UserRow[]>('admin_search_users', { p_query: search, p_limit: PAGE, p_offset: page * PAGE });
   const suspend = useRpcMutation('set_user_suspended', { invalidate: [['rpc', 'admin_search_users']], success: t('common.saved') });
 
-  const columns: ColumnDef<UserRow, unknown>[] = [
+  const columns: ColumnDef<UserRow>[] = [
     { header: t('common.name'), cell: ({ row }) => row.original.name ?? '-' },
     { header: t('sa.users.handle'), cell: ({ row }) => row.original.handle ?? '-' },
     { header: t('common.phone'), cell: ({ row }) => row.original.phone ?? '-' },

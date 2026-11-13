@@ -37,10 +37,10 @@ export function OffersScreen() {
   const end = useRpcMutation('end_offer', options);
   const duplicate = useRpcMutation('duplicate_offer', options);
 
-  const columns: ColumnDef<OfferRow, unknown>[] = [
+  const columns: ColumnDef<OfferRow>[] = [
     { header: t('rd.offers.title_label'), accessorKey: 'title' },
     { header: t('common.status'), cell: ({ row }) => <StatusChip status={row.original.status} /> },
-    { header: t('sa.offers.discount'), cell: ({ row }) => `${row.original.discount_percent}% · ${formatPaise(Number(row.original.discount_cap_paise))}` },
+    { header: t('sa.offers.discount'), cell: ({ row }) => `${row.original.discount_percent}% · ${formatPaise(row.original.discount_cap_paise)}` },
     { header: t('sa.offers.codes'), cell: ({ row }) => t('rd.offers.issued', { issued: row.original.codes_issued, total: row.original.total_codes }) },
     { header: t('sa.offers.ends'), cell: ({ row }) => formatDateIst(row.original.ends_at) },
     {

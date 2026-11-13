@@ -1,7 +1,7 @@
 'use client';
 
 import { staffInviteSchema } from '@datapal/core';
-import { Button, Card, Chip, FormField, Input, PageHeader, Select, Skeleton, useApi, useRpc, useRpcMutation, useT, useToast } from '@datapal/ui-web';
+import { Button, Card, Chip, FormField, Input, PageHeader, Select, Skeleton, invokeFunction, useApi, useRpc, useRpcMutation, useT, useToast } from '@datapal/ui-web';
 import { useState } from 'react';
 import { useRestaurant } from '@/components/restaurant-context';
 import { RoleScreen } from '@/components/role-screen';
@@ -28,10 +28,11 @@ export function StaffScreen() {
     invite.mutate(
       { p_restaurant_id: restaurant.id, p_email: email, p_role: role },
       {
-        onSuccess: async (id) => {
-          const { error } = await api.functions.invoke('send-email', { body: { kind: 'restaurant_invite', id } });
-          if (error) toast.error(t('sa.team.email_failed'));
-          else toast.success(t('rd.staff.invited'));
+        onSuccess: (id) => {
+          void invokeFunction(api, 'send-email', { kind: 'restaurant_invite', id }).then((sent) => {
+            if (sent === null) toast.error(t('sa.team.email_failed'));
+            else toast.success(t('rd.staff.invited'));
+          });
           setEmail('');
         },
       },

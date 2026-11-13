@@ -18,7 +18,7 @@ export function LegalGate({ children }: { children: ReactNode }) {
   const kinds = (pending.data ?? []).map((d) => d.kind);
   const docs = useRows<Doc[]>(
     ['rows', 'legal_documents', kinds],
-    (api) => api.from('legal_documents').select('kind, version, title, body').in('kind', kinds).not('published_at', 'is', null).order('version', { ascending: false }) as never,
+    (api) => api.from('legal_documents').select('kind, version, title, body').in('kind', kinds).not('published_at', 'is', null).order('version', { ascending: false }),
     kinds.length > 0,
   );
   const accept = useRpcMutation('accept_legal_documents', { invalidate: [['rpc', 'pending_legal'], ['rpc', 'my_restaurants']], success: t('common.saved') });

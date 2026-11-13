@@ -23,14 +23,14 @@ export function LedgerPanel() {
   const t = useT();
   const [page, setPage] = useState(0);
   const rows = useRows<LedgerRow[]>(['rows', 'fee_ledger', page], (api) =>
-    api.from('fee_ledger').select('id, kind, fee_paise, gst_paise, period, status, restaurant_id, created_at').order('created_at', { ascending: false }).range(page * PAGE, page * PAGE + PAGE - 1) as never,
+    api.from('fee_ledger').select('id, kind, fee_paise, gst_paise, period, status, restaurant_id, created_at').order('created_at', { ascending: false }).range(page * PAGE, page * PAGE + PAGE - 1),
   );
 
-  const columns: ColumnDef<LedgerRow, unknown>[] = [
+  const columns: ColumnDef<LedgerRow>[] = [
     { header: t('common.date'), cell: ({ row }) => formatDateIst(row.original.created_at) },
     { header: t('sa.billing.kind'), cell: ({ row }) => (row.original.kind === 'boost_fee' ? t('rd.billing.kind_boost_fee') : t('rd.billing.kind_referral_fee')) },
-    { header: t('rd.billing.subtotal'), cell: ({ row }) => formatPaise(Number(row.original.fee_paise)) },
-    { header: t('rd.billing.gst'), cell: ({ row }) => formatPaise(Number(row.original.gst_paise)) },
+    { header: t('rd.billing.subtotal'), cell: ({ row }) => formatPaise(row.original.fee_paise) },
+    { header: t('rd.billing.gst'), cell: ({ row }) => formatPaise(row.original.gst_paise) },
     { header: t('sa.billing.period'), cell: ({ row }) => formatDateIst(row.original.period) },
     { header: t('common.status'), cell: ({ row }) => <StatusChip status={row.original.status} /> },
   ];

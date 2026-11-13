@@ -21,9 +21,9 @@ interface Request {
 function RequestsPanel() {
   const t = useT();
   const can = useCan();
-  const rows = useRows<Request[]>(['rows', 'data_requests'], (api) => api.from('data_requests').select('id, kind, status, due_at, created_at, user_id').order('due_at') as never);
+  const rows = useRows<Request[]>(['rows', 'data_requests'], (api) => api.from('data_requests').select('id, kind, status, due_at, created_at, user_id').order('due_at'));
   const fulfil = useRpcMutation('fulfil_data_request', { invalidate: [['rows', 'data_requests']], success: t('common.saved') });
-  const columns: ColumnDef<Request, unknown>[] = [
+  const columns: ColumnDef<Request>[] = [
     { header: t('sa.privacy.kind'), accessorKey: 'kind' },
     { header: t('common.date'), cell: ({ row }) => formatDateIst(row.original.created_at) },
     { header: t('sa.data_requests.due', { date: '' }).trim(), cell: ({ row }) => formatDateIst(row.original.due_at) },

@@ -14,7 +14,7 @@ export function SettingsScreen() {
   const can = useCan();
   const [history, setHistory] = useState<string | null>(null);
   const [saving, setSaving] = useState<string | null>(null);
-  const rows = useRows<{ key: string; value: unknown }[]>(['rows', 'platform_settings'], (api) => api.from('platform_settings').select('key, value') as never);
+  const rows = useRows<{ key: string; value: unknown }[]>(['rows', 'platform_settings'], (api) => api.from('platform_settings').select('key, value'));
   const update = useRpcMutation('update_setting', { invalidate: [['rows', 'platform_settings']], success: t('common.saved') });
   const values = new Map((rows.data ?? []).map((r) => [r.key, r.value]));
   const canEdit = can('settings.manage');
@@ -50,7 +50,7 @@ export function SettingsScreen() {
                       saving={saving === def.key && update.isPending}
                       onSave={(value) => {
                         setSaving(def.key);
-                        update.mutate({ p_key: def.key, p_value: value as never });
+                        update.mutate({ p_key: def.key, p_value: value });
                       }}
                       onHistory={() => setHistory(def.key)}
                     />

@@ -17,9 +17,9 @@ function splitLine(line: string): string[] {
   let current = '';
   let quoted = false;
   for (let i = 0; i < line.length; i += 1) {
-    const ch = line[i];
+    const ch = line.charAt(i);
     if (quoted) {
-      if (ch === '"' && line[i + 1] === '"') {
+      if (ch === '"' && line.charAt(i + 1) === '"') {
         current += '"';
         i += 1;
       } else if (ch === '"') quoted = false;

@@ -97,7 +97,6 @@ describe('overselling', () => {
       requesters.map(async (u) => {
         const c = new pg.Client({ connectionString: db.connectionString });
         await c.connect();
-        await as(c, u, async () => undefined);
         await c.query('select set_config($1, $2, false), set_config($3, $4, false)', [
           'request.jwt.claim.sub', u.id, 'request.jwt.claims', JSON.stringify({ sub: u.id, aal: 'aal1', role: 'authenticated' }),
         ]);

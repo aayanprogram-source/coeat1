@@ -26,14 +26,14 @@ export function MfaForm() {
   useEffect(() => {
     void (async () => {
       const { data: factors } = await api.auth.mfa.listFactors();
-      const verified = factors?.totp.find((f) => f.status === 'verified');
+      const verified = factors?.totp[0];
       if (verified) {
         setFactorId(verified.id);
         return;
       }
       for (const stale of factors?.all ?? []) await api.auth.mfa.unenroll({ factorId: stale.id });
       const { data, error: enrolError } = await api.auth.mfa.enroll({ factorType: 'totp' });
-      if (enrolError || !data) {
+      if (enrolError) {
         setFailure(enrolError);
         return;
       }

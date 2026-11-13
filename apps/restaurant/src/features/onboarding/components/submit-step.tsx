@@ -15,13 +15,13 @@ export function SubmitStep({ restaurantId }: { restaurantId: string }) {
   const t = useT();
   const router = useRouter();
   const summary = useRows<Summary>(['rows', 'onboarding-summary', restaurantId], (api) => api.from('restaurants').select('hours, logo_path, cover_path, merchant_agreement_accepted_at').eq('id', restaurantId).single() as never);
-  const menu = useRows<{ id: string }[]>(['rows', 'menu_items', restaurantId], (api) => api.from('menu_items').select('id').eq('restaurant_id', restaurantId).limit(1) as never);
+  const menu = useRows<{ id: string }[]>(['rows', 'menu_items', restaurantId], (api) => api.from('menu_items').select('id').eq('restaurant_id', restaurantId).limit(1));
   const submit = useRpcMutation('submit_restaurant', { invalidate: [['rpc', 'my_restaurants']] });
 
   const s = summary.data;
   const checks = [
     { label: t('rd.onboarding.step_hours'), ok: s !== undefined && Object.values(s.hours).some((rows) => rows.length > 0) },
-    { label: t('rd.onboarding.step_media'), ok: s !== undefined && s.logo_path !== null && s.cover_path !== null },
+    { label: t('rd.onboarding.step_media'), ok: s ? s.logo_path !== null && s.cover_path !== null : false },
     { label: t('rd.onboarding.step_menu'), ok: (menu.data?.length ?? 0) > 0 },
     { label: t('rd.onboarding.step_agreement'), ok: s?.merchant_agreement_accepted_at != null },
   ];

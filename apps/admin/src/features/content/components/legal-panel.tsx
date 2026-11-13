@@ -21,7 +21,7 @@ export function LegalPanel() {
   const [kind, setKind] = useState<LegalDocumentKind>('terms');
   const [showDiff, setShowDiff] = useState(false);
   const [edits, setEdits] = useState<Record<string, { title: string; body: string }>>({});
-  const docs = useRows<Doc[]>(['rows', 'legal_documents'], (api) => api.from('legal_documents').select('*').order('version', { ascending: false }) as never);
+  const docs = useRows<Doc[]>(['rows', 'legal_documents'], (api) => api.from('legal_documents').select('*').order('version', { ascending: false }));
   const invalidate = [['rows', 'legal_documents'], ['rpc', 'app_config']];
   const save = useRpcMutation('save_legal_draft', { invalidate, success: t('common.saved') });
   const publish = useRpcMutation('publish_legal_document', { invalidate, success: t('sa.content.published_ok') });

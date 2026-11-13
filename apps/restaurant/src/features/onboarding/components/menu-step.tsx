@@ -20,8 +20,8 @@ interface Item {
 
 export function MenuStep({ restaurantId, onSaved }: { restaurantId: string; onSaved: () => void }) {
   const t = useT();
-  const categories = useRows<Category[]>(['rows', 'menu_categories', restaurantId], (api) => api.from('menu_categories').select('id, name').eq('restaurant_id', restaurantId).order('sort_order') as never);
-  const items = useRows<Item[]>(['rows', 'menu_items', restaurantId], (api) => api.from('menu_items').select('id, category_id, name, price_paise, is_veg').eq('restaurant_id', restaurantId).order('name') as never);
+  const categories = useRows<Category[]>(['rows', 'menu_categories', restaurantId], (api) => api.from('menu_categories').select('id, name').eq('restaurant_id', restaurantId).order('sort_order'));
+  const items = useRows<Item[]>(['rows', 'menu_items', restaurantId], (api) => api.from('menu_items').select('id, category_id, name, price_paise, is_veg').eq('restaurant_id', restaurantId).order('name'));
   const invalidate = [['rows', 'menu_categories'], ['rows', 'menu_items']];
   const addCategory = useRpcMutation('save_menu_category', { invalidate });
   const addItem = useRpcMutation('save_menu_item', { invalidate });
@@ -31,7 +31,7 @@ export function MenuStep({ restaurantId, onSaved }: { restaurantId: string; onSa
   const [csv, setCsv] = useState<MenuCsvResult | null>(null);
 
   const cats = categories.data ?? [];
-  const chosen = item.category_id || cats[0]?.id || '';
+  const chosen = item.category_id !== '' ? item.category_id : (cats[0]?.id ?? '');
   const itemReady = chosen !== '' && item.name.trim() !== '' && Number(item.price) >= 0 && item.price !== '';
 
   return (
@@ -48,7 +48,7 @@ export function MenuStep({ restaurantId, onSaved }: { restaurantId: string; onSa
           <div className="flex flex-col gap-2">
             <p className="text-body text-ink tabular-nums">{t('rd.onboarding.menu_csv_summary', { good: csv.rows.length, bad: csv.errors.length })}</p>
             {csv.errors.length > 0 ? <p role="alert" className="text-caption text-danger">{t('rd.onboarding.menu_csv_lines', { lines: csv.errors.map((e) => e.line).join(', ') })}</p> : null}
-            <Button disabled={csv.rows.length === 0} loading={importMenu.isPending} onClick={() => importMenu.mutate({ p_restaurant_id: restaurantId, p_rows: csv.rows as never }, { onSuccess: () => setCsv(null) })}>
+            <Button disabled={csv.rows.length === 0} loading={importMenu.isPending} onClick={() => importMenu.mutate({ p_restaurant_id: restaurantId, p_rows: csv.rows }, { onSuccess: () => setCsv(null) })}>
               {t('rd.onboarding.menu_import')}
             </Button>
           </div>
@@ -59,7 +59,7 @@ export function MenuStep({ restaurantId, onSaved }: { restaurantId: string; onSa
         <FormField label={t('rd.onboarding.category_name')}>
           <Input value={category} onChange={(e) => setCategory(e.target.value)} />
         </FormField>
-        <Button variant="secondary" disabled={!category.trim()} loading={addCategory.isPending} onClick={() => addCategory.mutate({ p_restaurant_id: restaurantId, p_name: category, p_sort_order: cats.length }, { onSuccess: () => setCategory('') })}>
+        <Button variant="secondary" disabled={!category.trim()} loading={addCategory.isPending} onClick={() => addCategory.mutate({ p_restaurant_id: restaurantId, p_id: undefined, p_name: category, p_sort_order: cats.length }, { onSuccess: () => setCategory('') })}>
           {t('rd.onboarding.add_category')}
         </Button>
       </Card>
@@ -85,7 +85,7 @@ export function MenuStep({ restaurantId, onSaved }: { restaurantId: string; onSa
           <Button
             disabled={!itemReady}
             loading={addItem.isPending}
-            onClick={() => addItem.mutate({ p_restaurant_id: restaurantId, p_data: { category_id: chosen, dish_category_id: null, name: item.name, price_paise: rupeesToPaise(Number(item.price)), is_veg: item.veg, is_available: true } as never }, { onSuccess: () => setItem({ category_id: chosen, name: '', price: '', veg: false }) })}
+            onClick={() => addItem.mutate({ p_restaurant_id: restaurantId, p_id: undefined, p_data: { category_id: chosen, dish_category_id: null, name: item.name, price_paise: rupeesToPaise(Number(item.price)), is_veg: item.veg, is_available: true } }, { onSuccess: () => setItem({ category_id: chosen, name: '', price: '', veg: false }) })}
           >
             {t('rd.onboarding.add_item')}
           </Button>
@@ -98,7 +98,7 @@ export function MenuStep({ restaurantId, onSaved }: { restaurantId: string; onSa
             <span className="truncate text-ink">
               {i.name} <span className="text-caption text-muted">· {cats.find((c) => c.id === i.category_id)?.name}</span>
             </span>
-            <span className="text-muted">{formatPaise(Number(i.price_paise))}</span>
+            <span className="text-muted">{formatPaise(i.price_paise)}</span>
           </li>
         ))}
       </ul>

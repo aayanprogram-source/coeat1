@@ -25,7 +25,7 @@ export function RestaurantsScreen() {
   const [selected, setSelected] = useState<string | null>(null);
   const query = useRpc<Row[]>('admin_restaurants', { p_status: status });
 
-  const columns: ColumnDef<Row, unknown>[] = [
+  const columns: ColumnDef<Row>[] = [
     { header: t('common.name'), accessorKey: 'name' },
     { header: t('sa.restaurants.city'), accessorKey: 'city' },
     { header: t('common.status'), cell: ({ row }) => <StatusChip status={row.original.status} /> },

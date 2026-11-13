@@ -35,7 +35,7 @@ export function LiveFeed() {
               </p>
             </div>
             <div className="flex items-center gap-2 tabular-nums">
-              <span className="text-body text-ink">{formatPaise(Number(e.bill_paise))}</span>
+              <span className="text-body text-ink">{formatPaise(e.bill_paise)}</span>
               <StatusChip status={e.status} />
             </div>
           </li>

@@ -30,7 +30,7 @@ export function ReviewsScreen() {
   const dishes = useRows<Dish[]>(['rows', 'dish-ratings', restaurant.id], (api) => api.from('restaurant_dish_ratings').select('menu_item_id, name, rating_count, avg_rating, verified_count').eq('restaurant_id', restaurant.id).order('rating_count', { ascending: false }) as never);
   const trend = useRpc<Trend[]>('restaurant_rating_trend', { p_restaurant_id: restaurant.id, p_days: 90 });
 
-  const columns: ColumnDef<Dish, unknown>[] = [
+  const columns: ColumnDef<Dish>[] = [
     { header: t('rd.reviews.dish'), accessorKey: 'name' },
     { header: t('rd.overview.avg_rating'), cell: ({ row }) => row.original.avg_rating ?? '–' },
     { header: t('rd.reviews.ratings'), accessorKey: 'rating_count' },
@@ -43,7 +43,7 @@ export function ReviewsScreen() {
       <div className="flex flex-col gap-6">
         <Card>
           <CardTitle className="mb-4">{t('rd.reviews.trend')}</CardTitle>
-          {trend.data?.length === 0 ? <p className="text-body text-muted">{t('rd.reviews.empty')}</p> : <TrendChart ariaLabel={t('rd.reviews.trend')} data={(trend.data ?? []).map((d) => ({ label: formatDateIst(d.day, { year: undefined }), value: Number(d.avg_rating) }))} />}
+          {trend.data?.length === 0 ? <p className="text-body text-muted">{t('rd.reviews.empty')}</p> : <TrendChart ariaLabel={t('rd.reviews.trend')} data={(trend.data ?? []).map((d) => ({ label: formatDateIst(d.day, { year: undefined }), value: d.avg_rating }))} />}
         </Card>
         <section>
           <h2 className="mb-2 font-heading text-h2 font-semibold text-ink">{t('rd.reviews.by_dish')}</h2>

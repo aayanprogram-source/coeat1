@@ -30,7 +30,7 @@ interface CampaignLog {
 
 function CampaignForm() {
   const t = useT();
-  const cities = useRows<{ id: string; name: string }[]>(['rows', 'cities', 'choices'], (api) => api.from('cities').select('id, name').order('name') as never);
+  const cities = useRows<{ id: string; name: string }[]>(['rows', 'cities', 'choices'], (api) => api.from('cities').select('id, name').order('name'));
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
   const [city, setCity] = useState('');
@@ -86,13 +86,13 @@ export function NotificationsScreen() {
   const can = useCan();
   const log = useRpc<CampaignLog>('admin_campaign_log', {});
 
-  const campaignColumns: ColumnDef<Campaign, unknown>[] = [
+  const campaignColumns: ColumnDef<Campaign>[] = [
     { header: t('sa.content.title'), accessorKey: 'title' },
     { header: t('common.status'), cell: ({ row }) => <StatusChip status={row.original.status} /> },
     { header: t('sa.notifications.recipients'), accessorKey: 'recipients' },
     { header: t('common.date'), cell: ({ row }) => formatDateTimeIst(row.original.scheduled_at ?? row.original.created_at) },
   ];
-  const logColumns: ColumnDef<LogRow, unknown>[] = [
+  const logColumns: ColumnDef<LogRow>[] = [
     { header: t('common.date'), cell: ({ row }) => formatDateTimeIst(row.original.created_at) },
     { header: t('sa.content.event'), accessorKey: 'event' },
     { header: t('sa.notifications.channel'), accessorKey: 'channel' },

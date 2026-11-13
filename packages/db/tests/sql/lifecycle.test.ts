@@ -24,7 +24,7 @@ async function settle(world: World) {
 }
 
 beforeAll(async () => {
-  db = await startTestDatabase(54334);
+  db = await startTestDatabase(54340);
   w = await buildWorld(c());
 });
 afterAll(async () => {
@@ -80,7 +80,7 @@ describe('invoicing', () => {
     expect(inv.number).toMatch(/^ACME-\d{6}$/);
     expect(Number(inv.subtotal_paise)).toBe(ledger.fee);
     expect(Number(inv.gst_paise)).toBe(ledger.gst);
-    expect(Number(inv.total_paise)).toBe(ledger.fee + ledger.gst);
+    expect(Number(inv.total_paise)).toBe(Number(ledger.fee) + Number(ledger.gst));
 
     await q(c(), "update invoices set payment_link_id = 'plink_1' where id = $1", [inv.id]);
     expect((await q(c(), "select record_payment_event('evt_1', 'plink_1', '{}'::jsonb) r")).rows[0].r).toBe(true);
@@ -89,7 +89,7 @@ describe('invoicing', () => {
     await expectFail(rpc(world.admin, "select mark_invoice_paid($1, 'UTR12345')", [inv.id]), 'invoice_already_paid');
 
     const csv = (await rpc(world.admin, "select accountant_export(current_date - 1, current_date + 1) r")).r as { total_paise: number }[];
-    const exported = csv.filter((row) => row.total_paise === ledger.fee + ledger.gst);
+    const exported = csv.filter((row) => row.total_paise === Number(ledger.fee) + Number(ledger.gst));
     expect(exported).toHaveLength(1);
   });
 });
@@ -162,7 +162,7 @@ describe('expiry, waitlist and fraud', () => {
       starts_at: new Date(Date.now() - 3600_000).toISOString(), ends_at: new Date(Date.now() + 86400_000).toISOString(), drop_at: null, active_hours: [], group_credit_cap: 3 })]));
     expect((await q(c(), 'select app.open_drops() n')).rows[0].n).toBe(1);
     const inbox = (await as(c(), second, () => q(c(), 'select title from notifications where user_id = $1', [second.id]))).rows;
-    expect(inbox).toEqual([{ title: `${'Test Kitchen'} has codes` }]);
+    expect(inbox).toEqual([{ title: `Test Kitchen has codes` }]);
 
     await q(c(), "update codes set expires_at = now() - interval '1 minute' where holder_id = $1", [first.id]);
     await q(c(), "update stories set expires_at = now() - interval '1 minute' where id = $1", [story]);
@@ -335,3 +335,42 @@ describe('restaurant dashboard reads', () => {
     expect((await q(c(), 'select merchant_agreement_version v from restaurants where id = $1', [world.restaurantId])).rows[0].v).toBe(latest);
   });
 });
+
+describe('customer app reads', () => {
+  it('serves a single story, wallet, restaurant page, friends and diary to the right people', async () => {
+    const world = await buildWorld(c());
+    const author = await customer('cust_author');
+    const story = await postStoryAs(c(), author, world);
+    const friend = await customer('cust_friend');
+    const stranger = await customer('cust_stranger');
+    await befriend(c(), author, friend);
+
+    const card = (await rpc(friend, 'select get_story($1) s', [story])).s;
+    expect(card.id).toBe(story);
+    expect(card.offer.remaining).toBe(20);
+    await expectFail(rpc(stranger, 'select get_story($1)', [story]), 'story_not_found');
+
+    const issued = (await rpc(friend, 'select issue_code($1) r', [story])).r;
+    const wallet = (await rpc(friend, 'select my_wallet() w')).w;
+    expect(wallet.codes).toHaveLength(1);
+    expect(wallet.codes[0].short_code).toBe(issued.code.short_code);
+    expect(wallet.codes[0].restaurant.name).toBe('Test Kitchen');
+
+    const page = (await rpc(friend, 'select restaurant_page($1) p', [world.restaurantId])).p;
+    expect(page.restaurant.name).toBe('Test Kitchen');
+    expect(page.dishes).toHaveLength(1);
+    expect(page.friends.map((f: { id: string }) => f.id)).toContain(author.id);
+    expect(page.offer.total_codes).toBe(20);
+
+    expect((await rpc(friend, 'select my_friends() f')).f.friends).toHaveLength(1);
+    const stats = (await rpc(author, 'select my_profile_stats() s')).s;
+    expect(stats.stories).toBe(1);
+    expect(stats.friends).toBe(1);
+
+    await q(c(), "update stories set expires_at = now() - interval '1 minute' where id = $1", [story]);
+    await q(c(), 'select app.expire_items()');
+    expect((await rpc(friend, 'select get_feed() f')).f.items).toHaveLength(0);
+    expect((await rpc(author, 'select food_diary() d')).d).toHaveLength(1);
+  });
+});
+

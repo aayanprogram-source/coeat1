@@ -39,17 +39,17 @@ export function RedemptionsScreen() {
 
   const openPhoto = async (path: string) => {
     const { data, error } = await api.storage.from('bill-photos').createSignedUrl(path, 60);
-    if (error || !data) toast.error(t('errors.unknown'));
+    if (error) toast.error(t('errors.unknown'));
     else window.open(data.signedUrl, '_blank', 'noopener,noreferrer');
   };
 
-  const columns: ColumnDef<RedemptionRow, unknown>[] = [
+  const columns: ColumnDef<RedemptionRow>[] = [
     { header: t('common.date'), cell: ({ row }) => formatDateTimeIst(row.original.created_at) },
     { header: t('sa.offers.restaurant'), accessorKey: 'restaurant' },
     { header: t('sa.redemptions.customer'), accessorKey: 'customer' },
-    { header: t('rd.billing.subtotal'), cell: ({ row }) => formatPaise(Number(row.original.bill_paise)) },
-    { header: t('rd.redeem.discount'), cell: ({ row }) => formatPaise(Number(row.original.discount_paise)) },
-    { header: t('sa.redemptions.fee'), cell: ({ row }) => formatPaise(Number(row.original.fee_paise)) },
+    { header: t('rd.billing.subtotal'), cell: ({ row }) => formatPaise(row.original.bill_paise) },
+    { header: t('rd.redeem.discount'), cell: ({ row }) => formatPaise(row.original.discount_paise) },
+    { header: t('sa.redemptions.fee'), cell: ({ row }) => formatPaise(row.original.fee_paise) },
     { header: t('common.status'), cell: ({ row }) => <StatusChip status={row.original.status} /> },
     {
       id: 'actions',

@@ -16,7 +16,7 @@ export function HoursStep({ restaurantId, initial, onSaved }: { restaurantId: st
     <div className="flex flex-col gap-4">
       <WeeklyHoursEditor value={hours} onChange={setHours} />
       {!open ? <p className="text-caption text-muted">{t('rd.hours.need_one')}</p> : null}
-      <Button disabled={!valid} loading={save.isPending} onClick={() => save.mutate({ p_restaurant_id: restaurantId, p_details: { hours } as never }, { onSuccess: onSaved })}>
+      <Button disabled={!valid} loading={save.isPending} onClick={() => save.mutate({ p_restaurant_id: restaurantId, p_details: { hours } }, { onSuccess: onSaved })}>
         {t('common.continue')}
       </Button>
     </div>

@@ -22,7 +22,7 @@ export function OverviewScreen() {
   const t = useT();
   const query = useRows<Analytics | null>(['analytics'], (api) => api.from('platform_analytics').select('*').maybeSingle() as never);
   const a = query.data;
-  const value = (n: number | undefined, f: (v: number) => string = formatCount) => (a && n !== undefined ? f(Number(n)) : null);
+  const value = (n: number | undefined, f: (v: number) => string = formatCount) => (a && n !== undefined ? f(n) : null);
 
   return (
     <Screen permission="overview.view">

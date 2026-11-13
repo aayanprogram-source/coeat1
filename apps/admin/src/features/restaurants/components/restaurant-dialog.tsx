@@ -49,7 +49,7 @@ export function RestaurantDialog({ restaurantId, onClose }: { restaurantId: stri
           </div>
           <p className="text-body text-ink">{data.restaurant.address}</p>
           <p className="text-caption text-muted tabular-nums">
-            {t('sa.restaurants.stats', { menu: data.menu_items, redeemed: data.verified_redemptions, fees: formatPaise(Number(data.fees_paise)) })}
+            {t('sa.restaurants.stats', { menu: data.menu_items, redeemed: data.verified_redemptions, fees: formatPaise(data.fees_paise) })}
           </p>
           <ul className="flex flex-col gap-1 text-caption">
             {data.offers.map((o) => (

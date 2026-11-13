@@ -19,7 +19,7 @@ export function PendingRewardsPanel() {
   const { restaurant } = useRestaurant();
   const pending = useRpc<Pending[]>('restaurant_pending_rewards', { p_restaurant_id: restaurant.id });
   const use = useRpcMutation('mark_reward_used', { invalidate: [['rpc', 'restaurant_pending_rewards']], success: t('common.saved') });
-  const columns: ColumnDef<Pending, unknown>[] = [
+  const columns: ColumnDef<Pending>[] = [
     { header: t('rd.redeem.customer'), accessorKey: 'customer' },
     { header: t('rd.promoters.reward_type'), accessorKey: 'label' },
     { header: t('common.date'), cell: ({ row }) => formatDateIst(row.original.created_at) },
@@ -28,7 +28,7 @@ export function PendingRewardsPanel() {
       id: 'actions',
       header: t('common.actions'),
       cell: ({ row }) => (
-        <Button variant="secondary" loading={use.isPending && use.variables?.p_reward_id === row.original.id} onClick={() => use.mutate({ p_reward_id: row.original.id })}>
+        <Button variant="secondary" loading={use.isPending && use.variables.p_reward_id === row.original.id} onClick={() => use.mutate({ p_reward_id: row.original.id })}>
           {t('rd.promoters.mark_used')}
         </Button>
       ),

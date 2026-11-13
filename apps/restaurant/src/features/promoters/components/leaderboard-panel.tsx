@@ -17,7 +17,7 @@ export function LeaderboardPanel() {
   const t = useT();
   const { restaurant } = useRestaurant();
   const board = useRpc<Promoter[]>('get_leaderboard', { p_restaurant_id: restaurant.id, p_limit: 25 });
-  const columns: ColumnDef<Promoter, unknown>[] = [
+  const columns: ColumnDef<Promoter>[] = [
     { header: '#', cell: ({ row }) => row.index + 1 },
     { header: t('common.name'), cell: ({ row }) => row.original.name ?? '-' },
     { header: t('sa.users.handle'), cell: ({ row }) => row.original.handle ?? '-' },

@@ -1,7 +1,7 @@
 'use client';
 
 import { formatDateTimeIst, integrationSchema, type IntegrationDefinition } from '@datapal/core';
-import { Button, Card, Chip, FormField, Input, useApi, useRpcMutation, useT, useToast } from '@datapal/ui-web';
+import { Button, Card, Chip, FormField, Input, invokeFunction, useApi, useRpcMutation, useT, useToast } from '@datapal/ui-web';
 import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
@@ -33,22 +33,27 @@ export function IntegrationCard({ definition, row, canManage }: { definition: In
     const merged: Record<string, string> = { ...values };
     const keptSecrets = secrets.filter((f) => !merged[f.name] && row?.secret_hints[f.name]);
     const check = integrationSchema(definition.provider).safeParse(
-      Object.fromEntries(definition.fields.map((f) => [f.name, merged[f.name] || (keptSecrets.includes(f) ? 'kept' : '')])),
+      Object.fromEntries(
+        definition.fields.map((f) => {
+          const entered = merged[f.name] ?? '';
+          return [f.name, entered === '' ? (keptSecrets.includes(f) ? 'kept' : '') : entered];
+        }),
+      ),
     );
     if (!check.success) {
       toast.error(t('common.invalid_value'));
       return;
     }
     const pub = Object.fromEntries(publicFields.map((f) => [f.name, merged[f.name] ?? '']));
-    const sec = Object.fromEntries(secrets.filter((f) => merged[f.name]).map((f) => [f.name, merged[f.name] as string]));
+    const sec = Object.fromEntries(secrets.flatMap((f) => { const v = merged[f.name]; return v ? [[f.name, v] as const] : []; }));
     save.mutate({ p_provider: definition.provider, p_kind: definition.kind, p_public: pub, p_secrets: sec });
   };
 
   const test = async () => {
     setTesting(true);
-    const { data, error } = await api.functions.invoke<{ ok: boolean; message: string }>('integration-test', { body: { provider: definition.provider, to: testTo || undefined } });
+    const data = await invokeFunction<{ ok: boolean; message: string }>(api, 'integration-test', { provider: definition.provider, ...(testTo ? { to: testTo } : {}) });
     setTesting(false);
-    if (error || !data) toast.error(t('errors.unknown'));
+    if (!data) toast.error(t('errors.unknown'));
     else if (data.ok) toast.success(t('sa.integrations.test_ok'));
     else toast.error(data.message);
     await Promise.all([client.invalidateQueries({ queryKey: ['rows', 'integrations'] }), client.invalidateQueries({ queryKey: ['rpc', 'go_live_checklist'] })]);

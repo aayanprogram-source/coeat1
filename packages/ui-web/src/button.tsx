@@ -22,7 +22,7 @@ export function Button({ variant = 'primary', loading = false, icon, className, 
   return (
     <button
       type={type}
-      disabled={disabled || loading}
+      disabled={disabled === true || loading}
       aria-busy={loading}
       className={cn(
         'inline-flex min-h-[44px] items-center justify-center gap-2 rounded-button px-4 text-body font-medium transition duration-fast ease-out',

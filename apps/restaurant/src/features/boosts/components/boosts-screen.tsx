@@ -31,10 +31,10 @@ export function BoostsScreen() {
   const setState = useRpcMutation('set_boost_state', { invalidate: [['rows', 'boost_report']], success: t('common.saved') });
   const enabled = config.data ? settingBoolean(config.data, 'sponsored_enabled') : false;
 
-  const columns: ColumnDef<Boost, unknown>[] = [
+  const columns: ColumnDef<Boost>[] = [
     { header: t('rd.boosts.placement'), cell: ({ row }) => (row.original.placement === 'feed' ? t('rd.boosts.placement_feed') : t('rd.boosts.placement_explore')) },
     { header: t('rd.boosts.dates'), cell: ({ row }) => `${formatDateIst(row.original.starts_at)} – ${formatDateIst(row.original.ends_at)}` },
-    { header: t('rd.boosts.price'), cell: ({ row }) => formatPaise(Number(row.original.price_paise)) },
+    { header: t('rd.boosts.price'), cell: ({ row }) => formatPaise(row.original.price_paise) },
     { header: t('rd.boosts.impressions'), cell: ({ row }) => formatCount(row.original.impressions) },
     { header: t('rd.boosts.taps'), cell: ({ row }) => formatCount(row.original.taps) },
     { header: t('rd.boosts.codes'), cell: ({ row }) => formatCount(row.original.codes_issued) },

@@ -16,7 +16,7 @@ export interface SettingRowProps {
 
 function toDraft(def: SettingDefinition, value: unknown): string {
   if (def.type === 'json') return JSON.stringify(value ?? def.initial, null, 2);
-  return String(value ?? '');
+  return typeof value === 'string' || typeof value === 'number' ? String(value) : '';
 }
 
 function parse(def: SettingDefinition, draft: string): unknown {

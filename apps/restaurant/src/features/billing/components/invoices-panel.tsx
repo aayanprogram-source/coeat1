@@ -1,7 +1,7 @@
 'use client';
 
 import { formatDateIst, formatPaise, toCsv, type AppConfig } from '@datapal/core';
-import { Button, Card, DataTable, EmptyState, StatusChip, useApi, useRows, useRpc, useT, useToast } from '@datapal/ui-web';
+import { Button, Card, DataTable, EmptyState, StatusChip, invokeFunction, useApi, useRows, useRpc, useT, useToast } from '@datapal/ui-web';
 import type { ColumnDef } from '@tanstack/react-table';
 import { Download, FileText, Receipt } from 'lucide-react';
 import { useState } from 'react';
@@ -30,23 +30,23 @@ export function InvoicesPanel() {
   const [paying, setPaying] = useState<string | null>(null);
   const config = useRpc<AppConfig>('app_config', {});
   const summary = useRpc<{ company: { bank: Record<string, string>; upi: string }; accrued_paise: number }>('restaurant_billing_summary', { p_restaurant_id: restaurant.id });
-  const rows = useRows<Invoice[]>(['rows', 'invoices', restaurant.id], (a) => a.from('invoices').select('id, number, period, subtotal_paise, gst_paise, total_paise, status, due_at, payment_link').eq('restaurant_id', restaurant.id).order('period', { ascending: false }) as never);
+  const rows = useRows<Invoice[]>(['rows', 'invoices', restaurant.id], (a) => a.from('invoices').select('id, number, period, subtotal_paise, gst_paise, total_paise, status, due_at, payment_link').eq('restaurant_id', restaurant.id).order('period', { ascending: false }));
 
   const payNow = async (id: string) => {
     setPaying(id);
-    const { data, error } = await api.functions.invoke<{ url?: string }>('create-payment-link', { body: { invoice_id: id } });
+    const data = await invokeFunction<{ url?: string }>(api, 'create-payment-link', { invoice_id: id });
     setPaying(null);
-    if (error || !data?.url) toast.error(t('errors.unknown'));
+    if (!data?.url) toast.error(t('errors.unknown'));
     else window.open(data.url, '_blank', 'noopener,noreferrer');
   };
 
-  const columns: ColumnDef<Invoice, unknown>[] = [
+  const columns: ColumnDef<Invoice>[] = [
     { header: t('sa.billing.number'), accessorKey: 'number' },
     { header: t('sa.billing.period'), cell: ({ row }) => formatDateIst(row.original.period, { day: undefined }) },
-    { header: t('rd.billing.subtotal'), cell: ({ row }) => formatPaise(Number(row.original.subtotal_paise)) },
-    { header: t('rd.billing.gst'), cell: ({ row }) => formatPaise(Number(row.original.gst_paise)) },
-    { header: t('common.total'), cell: ({ row }) => formatPaise(Number(row.original.total_paise)) },
-    { header: t('rd.billing.due', { date: formatDateIst('2000-01-01') }).replace(formatDateIst('2000-01-01'), '').trim(), cell: ({ row }) => formatDateIst(row.original.due_at) },
+    { header: t('rd.billing.subtotal'), cell: ({ row }) => formatPaise(row.original.subtotal_paise) },
+    { header: t('rd.billing.gst'), cell: ({ row }) => formatPaise(row.original.gst_paise) },
+    { header: t('common.total'), cell: ({ row }) => formatPaise(row.original.total_paise) },
+    { header: t('rd.billing.due_column'), cell: ({ row }) => formatDateIst(row.original.due_at) },
     { header: t('common.status'), cell: ({ row }) => <StatusChip status={row.original.status} /> },
     {
       id: 'actions',
@@ -71,7 +71,7 @@ export function InvoicesPanel() {
       <div className="flex flex-wrap items-center justify-between gap-3">
         <Card className="flex-1">
           <p className="text-caption text-muted">{t('rd.billing.accrued')}</p>
-          <p className="font-heading text-h1 font-semibold tabular-nums text-ink">{summary.data ? formatPaise(Number(summary.data.accrued_paise)) : '–'}</p>
+          <p className="font-heading text-h1 font-semibold tabular-nums text-ink">{summary.data ? formatPaise(summary.data.accrued_paise) : '–'}</p>
           <p className="text-caption text-muted">{t('rd.billing.accrued_note')}</p>
         </Card>
         <Button variant="secondary" icon={<Download className="h-4 w-4" aria-hidden />} disabled={!rows.data?.length} onClick={() => downloadCsv('invoices.csv', toCsv((rows.data ?? []).map(({ id: _id, payment_link: _link, ...rest }) => rest)))}>

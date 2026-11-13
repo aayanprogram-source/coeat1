@@ -1,7 +1,7 @@
 'use client';
 
 import { formatDateIst, formatPaise, type AppConfig } from '@datapal/core';
-import { Button, DataTable, EmptyState, Input, Select, useApi, useRpc, useRpcMutation, useT, useToast, StatusChip } from '@datapal/ui-web';
+import { Button, DataTable, EmptyState, Input, Select, invokeFunction, useApi, useRpc, useRpcMutation, useT, useToast, StatusChip } from '@datapal/ui-web';
 import type { ColumnDef } from '@tanstack/react-table';
 import { FilePlus, Receipt } from 'lucide-react';
 import { useState } from 'react';
@@ -36,8 +36,8 @@ export function InvoicesPanel() {
   const generate = useRpcMutation('generate_invoices', { invalidate: [['rpc', 'admin_invoices']], success: t('sa.billing.generated') });
 
   const makeLink = async (id: string) => {
-    const { data, error } = await api.functions.invoke<{ url?: string }>('create-payment-link', { body: { invoice_id: id } });
-    if (error || !data?.url) toast.error(t('errors.unknown'));
+    const data = await invokeFunction<{ url?: string }>(api, 'create-payment-link', { invoice_id: id });
+    if (!data?.url) toast.error(t('errors.unknown'));
     else {
       await navigator.clipboard.writeText(data.url);
       toast.success(t('common.copied'));
@@ -45,13 +45,13 @@ export function InvoicesPanel() {
     }
   };
 
-  const columns: ColumnDef<Invoice, unknown>[] = [
+  const columns: ColumnDef<Invoice>[] = [
     { header: t('sa.billing.number'), accessorKey: 'number' },
     { header: t('sa.offers.restaurant'), accessorKey: 'restaurant' },
     { header: t('sa.billing.period'), cell: ({ row }) => formatDateIst(row.original.period, { day: undefined }) },
-    { header: t('rd.billing.subtotal'), cell: ({ row }) => formatPaise(Number(row.original.subtotal_paise)) },
-    { header: t('rd.billing.gst'), cell: ({ row }) => formatPaise(Number(row.original.gst_paise)) },
-    { header: t('common.total'), cell: ({ row }) => formatPaise(Number(row.original.total_paise)) },
+    { header: t('rd.billing.subtotal'), cell: ({ row }) => formatPaise(row.original.subtotal_paise) },
+    { header: t('rd.billing.gst'), cell: ({ row }) => formatPaise(row.original.gst_paise) },
+    { header: t('common.total'), cell: ({ row }) => formatPaise(row.original.total_paise) },
     { header: t('rd.billing.due', { date: '' }).trim(), cell: ({ row }) => formatDateIst(row.original.due_at) },
     { header: t('common.status'), cell: ({ row }) => <StatusChip status={row.original.status} /> },
     {

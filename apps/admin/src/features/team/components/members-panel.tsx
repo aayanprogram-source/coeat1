@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, Card, Chip, FormField, Input, Select, Skeleton, useApi, useRows, useRpcMutation, useT, useToast } from '@datapal/ui-web';
+import { Button, Card, Chip, FormField, Input, Select, Skeleton, invokeFunction, useApi, useRows, useRpcMutation, useT, useToast } from '@datapal/ui-web';
 import { useState } from 'react';
 import { useAdmin, useCan } from '@/components/admin-context';
 
@@ -24,8 +24,8 @@ export function MembersPanel() {
   const me = useAdmin();
   const [email, setEmail] = useState('');
   const [roleId, setRoleId] = useState('');
-  const members = useRows<Member[]>(['rows', 'admin_users'], (a) => a.from('admin_users').select('user_id, name, email, role_id, mfa_enrolled').order('name') as never);
-  const roles = useRows<Role[]>(['rows', 'admin_roles'], (a) => a.from('admin_roles').select('id, name').order('name') as never);
+  const members = useRows<Member[]>(['rows', 'admin_users'], (a) => a.from('admin_users').select('user_id, name, email, role_id, mfa_enrolled').order('name'));
+  const roles = useRows<Role[]>(['rows', 'admin_roles'], (a) => a.from('admin_roles').select('id, name').order('name'));
   const invalidate = { invalidate: [['rows', 'admin_users']], success: t('common.saved') };
   const setRole = useRpcMutation('set_admin_member', invalidate);
   const revoke = useRpcMutation('revoke_admin_sessions', { success: t('sa.team.revoked') });
@@ -36,9 +36,10 @@ export function MembersPanel() {
     invite.mutate(
       { p_email: email, p_role_id: roleId },
       {
-        onSuccess: async (id) => {
-          const { error } = await api.functions.invoke('send-email', { body: { kind: 'admin_invite', id } });
-          if (error) toast.error(t('sa.team.email_failed'));
+        onSuccess: (id) => {
+          void invokeFunction(api, 'send-email', { kind: 'admin_invite', id }).then((sent) => {
+            if (sent === null) toast.error(t('sa.team.email_failed'));
+          });
           setEmail('');
         },
       },

@@ -117,10 +117,12 @@ export interface Database {
       duplicate_offer: { Args: { p_offer_id: unknown }; Returns: string };
       end_offer: { Args: { p_offer_id: unknown }; Returns: undefined };
       explore_restaurants: { Args: { p_query?: unknown; p_cuisine?: unknown; p_lat?: unknown; p_lng?: unknown; p_offset?: unknown }; Returns: Json };
+      food_diary: { Args: { p_limit?: unknown; p_offset?: unknown }; Returns: Json };
       fulfil_data_request: { Args: { p_request_id: unknown; p_status: unknown }; Returns: undefined };
       generate_invoices: { Args: { p_period: unknown }; Returns: number };
       get_feed: { Args: { p_filter?: unknown; p_cursor?: unknown; p_lat?: unknown; p_lng?: unknown }; Returns: Json };
       get_leaderboard: { Args: { p_restaurant_id: unknown; p_limit?: unknown }; Returns: Json };
+      get_story: { Args: { p_story_id: unknown }; Returns: Json };
       get_visit: { Args: { p_visit_id: unknown }; Returns: Json };
       give_consent: { Args: { p_kind: unknown }; Returns: undefined };
       go_live_checklist: { Args: Record<PropertyKey, never>; Returns: Json };
@@ -142,8 +144,12 @@ export interface Database {
       mark_reward_used: { Args: { p_reward_id: unknown }; Returns: undefined };
       missing_translation_keys: { Args: { p_locale: unknown; p_keys: unknown }; Returns: string[] };
       moderation_queue: { Args: { p_status?: unknown; p_limit?: unknown; p_offset?: unknown }; Returns: Json };
+      my_friends: { Args: Record<PropertyKey, never>; Returns: Json };
+      my_open_visit: { Args: Record<PropertyKey, never>; Returns: Json };
       my_permissions: { Args: Record<PropertyKey, never>; Returns: Json };
+      my_profile_stats: { Args: Record<PropertyKey, never>; Returns: Json };
       my_restaurants: { Args: Record<PropertyKey, never>; Returns: Json };
+      my_wallet: { Args: Record<PropertyKey, never>; Returns: Json };
       pause_offer: { Args: { p_offer_id: unknown }; Returns: undefined };
       pending_legal: { Args: { p_audience?: unknown }; Returns: Json };
       poll_results: { Args: { p_poll_id: unknown }; Returns: Json };
@@ -157,6 +163,7 @@ export interface Database {
       push_remove_token: { Args: { p_token: unknown }; Returns: undefined };
       push_save_tickets: { Args: { p_tickets: unknown }; Returns: undefined };
       quote_boost: { Args: { p_restaurant_id: unknown; p_city: unknown; p_starts: unknown; p_ends: unknown }; Returns: Json };
+      recent_polls: { Args: Record<PropertyKey, never>; Returns: Json };
       record_integration_test: { Args: { p_provider: unknown; p_ok: unknown; p_message: unknown }; Returns: undefined };
       record_payment_event: { Args: { p_event_id: unknown; p_payment_link_id: unknown; p_payload: unknown }; Returns: boolean };
       record_placement_event: { Args: { p_placement_id: unknown; p_kind: unknown }; Returns: undefined };
@@ -172,6 +179,7 @@ export interface Database {
       respond_friend_request: { Args: { p_friendship_id: unknown; p_accept: unknown }; Returns: undefined };
       restaurant_alerts: { Args: { p_restaurant_id: unknown }; Returns: Json };
       restaurant_billing_summary: { Args: { p_restaurant_id: unknown }; Returns: Json };
+      restaurant_page: { Args: { p_restaurant_id: unknown }; Returns: Json };
       restaurant_pending_rewards: { Args: { p_restaurant_id: unknown }; Returns: Json };
       restaurant_rating_trend: { Args: { p_restaurant_id: unknown; p_days?: unknown }; Returns: Json };
       restaurant_recent_ratings: { Args: { p_restaurant_id: unknown; p_limit?: unknown }; Returns: Json };

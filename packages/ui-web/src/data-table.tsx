@@ -5,7 +5,7 @@ import type { ReactNode } from 'react';
 import { Skeleton } from './skeleton';
 
 export interface DataTableProps<T> {
-  columns: ColumnDef<T, unknown>[];
+  columns: ColumnDef<T>[];
   rows: T[];
   loading?: boolean;
   empty: ReactNode;

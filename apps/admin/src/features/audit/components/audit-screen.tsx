@@ -45,9 +45,9 @@ function AuditPanel() {
   const rows = useRows<AuditRow[]>(['rows', 'audit_log', page, entity], (api) => {
     let query = api.from('audit_log').select('*').order('created_at', { ascending: false });
     if (entity) query = query.ilike('entity', `%${entity}%`);
-    return query.range(page * PAGE, page * PAGE + PAGE - 1) as never;
+    return query.range(page * PAGE, page * PAGE + PAGE - 1);
   });
-  const columns: ColumnDef<AuditRow, unknown>[] = [
+  const columns: ColumnDef<AuditRow>[] = [
     { header: t('common.date'), cell: ({ row }) => formatDateTimeIst(row.original.created_at) },
     { header: t('sa.audit.entity'), accessorKey: 'entity' },
     { header: t('sa.audit.entity_id'), cell: ({ row }) => <span className="break-all">{row.original.entity_id}</span> },
@@ -79,9 +79,9 @@ function ErrorsPanel() {
   const rows = useRows<ErrorRow[]>(['rows', 'error_log', page, source], (api) => {
     let query = api.from('error_log').select('id, source, message, created_at').order('created_at', { ascending: false });
     if (source) query = query.ilike('source', `%${source}%`);
-    return query.range(page * PAGE, page * PAGE + PAGE - 1) as never;
+    return query.range(page * PAGE, page * PAGE + PAGE - 1);
   });
-  const columns: ColumnDef<ErrorRow, unknown>[] = [
+  const columns: ColumnDef<ErrorRow>[] = [
     { header: t('common.date'), cell: ({ row }) => formatDateTimeIst(row.original.created_at) },
     { header: t('sa.audit.source'), cell: ({ row }) => <StatusChip status={row.original.source} /> },
     { header: t('sa.audit.message'), accessorKey: 'message' },

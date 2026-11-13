@@ -65,7 +65,7 @@ describe('sms providers', () => {
   it('builds an MSG91 flow request with digits-only numbers', () => {
     const { url, init } = buildMsg91Request(msg91, { phone: '+919800000000', otp: '123456', text: '' });
     expect(url).toBe('https://control.msg91.com/api/v5/flow');
-    const parsed = JSON.parse(String(init.body)) as { recipients: unknown[] };
+    const parsed = JSON.parse(typeof init.body === 'string' ? init.body : '') as { recipients: unknown[] };
     expect(parsed.recipients[0]).toEqual({ mobiles: '919800000000', OTP: '123456' });
     expect((init.headers as Record<string, string>)['authkey']).toBe('k');
   });
@@ -73,7 +73,7 @@ describe('sms providers', () => {
   it('builds a Twilio request with basic auth and form body', () => {
     const { url, init } = buildTwilioRequest(twilio, { phone: '+919800000000', otp: '1', text: 'Hi 1' });
     expect(url).toContain('/Accounts/AC1/Messages.json');
-    expect(String(init.body)).toContain('Body=Hi+1');
+    expect(typeof init.body === 'string' ? init.body : '').toContain('Body=Hi+1');
     const auth = (init.headers as Record<string, string>)['authorization'];
     expect(auth).toBe(`Basic ${Buffer.from('AC1:tok').toString('base64')}`);
   });

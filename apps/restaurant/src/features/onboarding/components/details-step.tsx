@@ -32,10 +32,10 @@ export function DetailsStep({ config, restaurantId, initial, onSaved }: DetailsS
 
   const submit = form.handleSubmit(async (values) => {
     if (restaurantId) {
-      await update.mutateAsync({ p_restaurant_id: restaurantId, p_details: values as never });
+      await update.mutateAsync({ p_restaurant_id: restaurantId, p_details: values });
       onSaved(restaurantId);
     } else {
-      const id = await create.mutateAsync({ p_details: { ...values, hours: noHours } as never });
+      const id = await create.mutateAsync({ p_details: { ...values, hours: noHours } });
       if (typeof id === 'string') onSaved(id);
     }
   });
