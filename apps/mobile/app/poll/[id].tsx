@@ -1,4 +1,4 @@
-import { PollScreen } from '@/features/explore/poll-screens';
+import { PollScreen } from '@/features/explore/poll-screen';
 
 export default function Page() {
   return <PollScreen />;

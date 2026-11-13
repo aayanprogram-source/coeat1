@@ -1,27 +1,17 @@
 import { settingNumber, settingString } from '@datapal/core';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
-import { Share, StyleSheet, Switch, View } from 'react-native';
+import { Share, StyleSheet, View } from 'react-native';
 import { useAuth } from '@/lib/auth';
 import { useAppConfig, useLocale, useT } from '@/lib/config';
 import { useRpcMutation } from '@/lib/rpc';
-import { colors } from '@/lib/theme';
 import { AppText } from '@/ui/app-text';
 import { BottomSheet } from '@/ui/bottom-sheet';
 import { Button } from '@/ui/button';
 import { Card } from '@/ui/card';
 import { Chip } from '@/ui/chip';
 import { Screen } from '@/ui/screen';
-
-function Toggle({ label, value, onChange }: { label: string; value: boolean; onChange: (next: boolean) => void }) {
-  return (
-    <View style={styles.row}>
-      <AppText style={styles.flex}>{label}</AppText>
-      <Switch accessibilityLabel={label} value={value} onValueChange={onChange} trackColor={{ true: colors.green700, false: colors.line }} />
-    </View>
-  );
-}
-
+import { Toggle } from './toggle-row';
 export function SettingsScreen() {
   const t = useT();
   const router = useRouter();

@@ -15,6 +15,7 @@ const ids = JSON.parse(readFileSync(resolve(__dirname, '..', '..', 'packages', '
   ios: string;
   android: string;
   scheme: string;
+  easProjectId: string;
 };
 const domain = process.env.LINK_DOMAIN as string;
 
@@ -64,6 +65,7 @@ const config: ExpoConfig = {
     supabaseUrl: process.env.SUPABASE_URL,
     supabaseAnonKey: process.env.SUPABASE_ANON_KEY,
     linkDomain: domain,
+    ...(ids.easProjectId ? { eas: { projectId: ids.easProjectId } } : {}),
   },
 };
 

@@ -14,7 +14,7 @@ import { RatingStars } from '@/ui/rating-stars';
 import { Screen } from '@/ui/screen';
 import { Skeleton } from '@/ui/skeleton';
 import { publicUrl } from '@/ui/storage-url';
-
+import { Stat } from './stat';
 interface Stats {
   stories: number;
   friends: number;
@@ -28,19 +28,6 @@ interface DiaryEntry {
   created_at: string;
   restaurant: { id: string; name: string };
   dishes: { name: string; rating: number }[];
-}
-
-function Stat({ value, label }: { value: number; label: string }) {
-  return (
-    <View style={styles.stat}>
-      <AppText variant="h1" numeric>
-        {value}
-      </AppText>
-      <AppText variant="caption" muted>
-        {label}
-      </AppText>
-    </View>
-  );
 }
 
 export function ProfileScreen() {

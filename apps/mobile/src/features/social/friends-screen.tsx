@@ -1,36 +1,16 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
 import { useT } from '@/lib/config';
 import { call, useRpc, useRpcMutation } from '@/lib/rpc';
 import { AppText } from '@/ui/app-text';
-import { Avatar, type Person } from '@/ui/avatar';
 import { Button } from '@/ui/button';
 import { ErrorState } from '@/ui/error-state';
 import { Screen } from '@/ui/screen';
 import { TextField } from '@/ui/text-field';
-
-interface Friend extends Person {
-  handle: string | null;
-}
+import { PersonRow, type Friend } from './person-row';
 interface Friends {
   friends: Friend[];
   requests: (Friend & { friendship_id: string })[];
-}
-
-function PersonRow({ person, children }: { person: Friend; children: React.ReactNode }) {
-  return (
-    <View style={styles.row}>
-      <Avatar person={person} />
-      <View style={styles.flex}>
-        <AppText variant="bodyMedium">{person.name}</AppText>
-        <AppText variant="caption" muted>
-          @{person.handle}
-        </AppText>
-      </View>
-      {children}
-    </View>
-  );
 }
 
 export function FriendsScreen() {
@@ -72,8 +52,3 @@ export function FriendsScreen() {
     </Screen>
   );
 }
-
-const styles = StyleSheet.create({
-  row: { flexDirection: 'row', alignItems: 'center', gap: 12 },
-  flex: { flex: 1 },
-});

@@ -1,44 +1,3 @@
-import type { ExplorePage } from '@datapal/core';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useState } from 'react';
-import { Share, StyleSheet, View } from 'react-native';
-import { env } from '@/lib/env';
-import { useT } from '@/lib/config';
-import { call, useRpc, useRpcMutation } from '@/lib/rpc';
-import { colors } from '@/lib/theme';
-import { AppText } from '@/ui/app-text';
-import { Button } from '@/ui/button';
-import { Chip } from '@/ui/chip';
-import { ErrorState } from '@/ui/error-state';
-import { ProgressBar } from '@/ui/progress-bar';
-import { Screen } from '@/ui/screen';
-import { TextField } from '@/ui/text-field';
-
-export function NewPollScreen() {
-  const t = useT();
-  const router = useRouter();
-  const [question, setQuestion] = useState('');
-  const [picked, setPicked] = useState<string[]>([]);
-  const list = useQuery({ queryKey: ['explore', 'poll-picker'], queryFn: () => call<ExplorePage>('explore_restaurants', {}) });
-  const create = useRpcMutation('create_poll');
-  const ready = question.trim().length >= 3 && picked.length >= 2 && picked.length <= 4;
-
-  return (
-    <Screen>
-      <AppText variant="h1">{t('explore.polls')}</AppText>
-      <TextField label={t('explore.poll_question_placeholder')} value={question} onChangeText={setQuestion} />
-      <AppText variant="label">{t('explore.poll_pick')}</AppText>
-      <View style={styles.chips}>
-        {(list.data?.items ?? []).map((r) => (
-          <Chip key={r.id} label={r.name} selected={picked.includes(r.id)} onPress={() => setPicked((p) => (p.includes(r.id) ? p.filter((x) => x !== r.id) : p.length < 4 ? [...p, r.id] : p))} />
-        ))}
-      </View>
-      <Button label={t('explore.new_poll')} disabled={!ready} loading={create.isPending} onPress={() => create.mutate({ p_question: question, p_restaurant_ids: picked }, { onSuccess: (id) => router.replace(`/poll/${id}`) })} />
-    </Screen>
-  );
-}
-
 interface Results {
   id: string;
   question: string;
@@ -46,6 +5,19 @@ interface Results {
   my_vote: string | null;
   options: { id: string; restaurant_id: string; name: string; votes: number }[];
 }
+
+import { useQueryClient } from '@tanstack/react-query';
+import { useLocalSearchParams } from 'expo-router';
+import { Share, StyleSheet, View } from 'react-native';
+import { env } from '@/lib/env';
+import { colors } from '@/lib/theme';
+import { useT } from '@/lib/config';
+import { useRpc, useRpcMutation } from '@/lib/rpc';
+import { AppText } from '@/ui/app-text';
+import { Button } from '@/ui/button';
+import { ErrorState } from '@/ui/error-state';
+import { ProgressBar } from '@/ui/progress-bar';
+import { Screen } from '@/ui/screen';
 
 export function PollScreen() {
   const t = useT();
@@ -80,6 +52,5 @@ export function PollScreen() {
 }
 
 const styles = StyleSheet.create({
-  chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   option: { gap: 6, borderBottomWidth: StyleSheet.hairlineWidth, borderColor: colors.line, paddingBottom: 12 },
 });

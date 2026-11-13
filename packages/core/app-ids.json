@@ -2,5 +2,6 @@
   "displayName": "Coeat",
   "ios": "app.coeat.customer",
   "android": "app.coeat.customer",
-  "scheme": "coeat"
+  "scheme": "coeat",
+  "easProjectId": ""
 }

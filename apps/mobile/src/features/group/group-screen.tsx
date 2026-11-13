@@ -1,10 +1,10 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useEffect, useState } from 'react';
-import QRCode from 'react-native-qrcode-svg';
+import { useEffect } from 'react';
 import { Share, StyleSheet, View } from 'react-native';
+import QRCode from 'react-native-qrcode-svg';
 import { useT } from '@/lib/config';
 import { env } from '@/lib/env';
-import { call, useErrorText, useRpc } from '@/lib/rpc';
+import { useRpc } from '@/lib/rpc';
 import { colors, radius } from '@/lib/theme';
 import { AppText } from '@/ui/app-text';
 import { Avatar } from '@/ui/avatar';
@@ -12,34 +12,6 @@ import { Button } from '@/ui/button';
 import { Card } from '@/ui/card';
 import { ErrorState } from '@/ui/error-state';
 import { Screen } from '@/ui/screen';
-import { TextField } from '@/ui/text-field';
-import { CheckinStep } from '../create/checkin-step';
-
-export function StartGroupScreen() {
-  const t = useT();
-  const router = useRouter();
-  const errorText = useErrorText();
-  const [label, setLabel] = useState('');
-  const [error, setError] = useState<string | null>(null);
-
-  const start = async (restaurantId: string) => {
-    try {
-      const visit = await call<{ id: string }>('start_group_visit', { p_restaurant_id: restaurantId, p_table_label: label });
-      router.replace(`/group/${visit.id}`);
-    } catch (e) {
-      setError(errorText(e));
-    }
-  };
-
-  return (
-    <Screen>
-      <AppText variant="h1">{t('group.start')}</AppText>
-      <TextField label={t('group.table_label')} value={label} onChangeText={setLabel} maxLength={30} />
-      {error ? <AppText color={colors.danger} accessibilityRole="alert">{error}</AppText> : null}
-      <CheckinStep onCheckedIn={(p) => p.restaurant && void start(p.restaurant.id)} />
-    </Screen>
-  );
-}
 
 interface Visit {
   id: string;
@@ -94,35 +66,6 @@ export function GroupScreen() {
           {data.status === 'verified' ? <Button label={t('group.rate_prompt')} onPress={() => router.push('/create')} /> : null}
         </>
       ) : null}
-    </Screen>
-  );
-}
-
-export function JoinGroupScreen() {
-  const t = useT();
-  const router = useRouter();
-  const errorText = useErrorText();
-  const { token } = useLocalSearchParams<{ token: string }>();
-  const [error, setError] = useState<string | null>(null);
-  const [busy, setBusy] = useState(false);
-
-  const join = async () => {
-    setBusy(true);
-    try {
-      const visitId = await call<string>('join_group_visit', { p_join_token: token });
-      router.replace(`/group/${visitId}`);
-    } catch (e) {
-      setError(errorText(e));
-    } finally {
-      setBusy(false);
-    }
-  };
-
-  return (
-    <Screen>
-      <AppText variant="h1">{t('group.join')}</AppText>
-      {error ? <AppText color={colors.danger} accessibilityRole="alert">{error}</AppText> : null}
-      <Button label={t('group.join')} loading={busy} onPress={() => void join()} />
     </Screen>
   );
 }

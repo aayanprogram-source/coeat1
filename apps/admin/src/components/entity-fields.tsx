@@ -1,30 +1,15 @@
-'use client';
-
-import { Checkbox, FormField, Input, Select, Textarea, useRows, useT } from '@datapal/ui-web';
+import { Checkbox, FormField, Input, Select, Textarea, useT } from '@datapal/ui-web';
 import type { StringKey } from '@datapal/i18n';
 import { Controller, type UseFormReturn } from 'react-hook-form';
+import { CityChoices } from './city-choices';
+'use client';
+
 
 export type FieldSpec =
   | { name: string; label: StringKey; type: 'text' | 'number' | 'textarea' }
   | { name: string; label: StringKey; type: 'bool' }
   | { name: string; label: StringKey; type: 'select'; options: { value: string; label: string }[] }
   | { name: string; label: StringKey; type: 'cities' };
-
-function CityChoices({ value, onChange }: { value: string[]; onChange: (next: string[]) => void }) {
-  const cities = useRows<{ id: string; name: string }[]>(['rows', 'cities', 'choices'], (a) => a.from('cities').select('id, name').order('name'));
-  return (
-    <div className="flex flex-col">
-      {(cities.data ?? []).map((c) => (
-        <Checkbox
-          key={c.id}
-          label={c.name}
-          checked={value.includes(c.id)}
-          onCheckedChange={(on) => onChange(on ? [...value, c.id] : value.filter((id) => id !== c.id))}
-        />
-      ))}
-    </div>
-  );
-}
 
 export function EntityFields({ fields, form }: { fields: FieldSpec[]; form: UseFormReturn }) {
   const t = useT();
