@@ -12,9 +12,9 @@ export interface KpiCardProps {
 export function KpiCard({ label, value, icon: Icon, hint }: KpiCardProps) {
   return (
     <Card className="flex flex-col gap-3 hover:-translate-y-0.5 hover:shadow-mid">
-      <div className="flex items-center justify-between">
-        <span className="text-[13px] font-semibold uppercase tracking-wide text-muted">{label}</span>
-        <span className="grid h-9 w-9 place-items-center rounded-xl bg-mint-100 text-primary">
+      <div className="flex min-h-[40px] items-start justify-between gap-2">
+        <span className="text-[12px] font-semibold uppercase leading-tight tracking-wide text-muted">{label}</span>
+        <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-mint-100 text-primary">
           <Icon className="h-[18px] w-[18px]" aria-hidden />
         </span>
       </div>

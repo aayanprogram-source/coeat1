@@ -1,8 +1,9 @@
 'use client';
 
 import { formatCount, formatPaise } from '@datapal/core';
-import { Card, CardTitle, ErrorState, KpiCard, PageHeader, TrendChart, useApi, useRows, useT } from '@datapal/ui-web';
-import { Banknote, Receipt, ShoppingBag, Star, UserPlus } from 'lucide-react';
+import { Card, CardTitle, ErrorState, KpiCard, TrendChart, useApi, useRows, useT } from '@datapal/ui-web';
+import { Banknote, Receipt, ScanLine, ShoppingBag, Star, Tag, UserPlus } from 'lucide-react';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRestaurant } from '@/components/restaurant-context';
@@ -20,6 +21,12 @@ interface Day {
 }
 
 const THIRTY_DAYS = 30 * 86_400_000;
+
+function greetingKey() {
+  const hour = new Date().getHours();
+  if (hour < 12) return 'rd.overview.greeting_morning' as const;
+  return hour < 17 ? ('rd.overview.greeting_afternoon' as const) : ('rd.overview.greeting_evening' as const);
+}
 
 export function OverviewScreen() {
   const t = useT();
@@ -58,7 +65,27 @@ export function OverviewScreen() {
 
   return (
     <RoleScreen roles={['owner', 'manager']}>
-      <PageHeader title={t('rd.nav.overview')} />
+      <section className="page-enter relative mb-8 overflow-hidden rounded-[28px] bg-gradient-to-br from-[#E8512F] via-[#CB3C1B] to-[#8E2A12] p-8 text-white shadow-[0_24px_60px_-24px_rgba(203,60,27,0.8)]">
+        <div aria-hidden className="absolute -right-16 -top-20 h-64 w-64 rounded-full bg-white/10" />
+        <div aria-hidden className="absolute -bottom-24 right-40 h-56 w-56 rounded-full bg-accent/25 blur-2xl" />
+        <div className="relative flex flex-wrap items-end justify-between gap-6">
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-widest text-white/70">{t(greetingKey())}</p>
+            <h1 className="mt-1 font-heading text-[36px] font-extrabold leading-tight tracking-tight">{restaurant.name}</h1>
+            <p className="mt-2 max-w-md text-[15px] text-white/85">{t('rd.overview.hero_body', { name: restaurant.name })}</p>
+          </div>
+          <div className="flex flex-wrap gap-3">
+            <Link href="/redeem" className="inline-flex min-h-[46px] items-center gap-2 rounded-button bg-white px-5 text-[14.5px] font-semibold text-primary shadow-low transition duration-base hover:-translate-y-px">
+              <ScanLine className="h-4 w-4" aria-hidden />
+              {t('rd.overview.hero_redeem')}
+            </Link>
+            <Link href="/offers" className="inline-flex min-h-[46px] items-center gap-2 rounded-button border border-white/30 bg-white/10 px-5 text-[14.5px] font-semibold text-white transition duration-base hover:bg-white/20">
+              <Tag className="h-4 w-4" aria-hidden />
+              {t('rd.overview.hero_offers')}
+            </Link>
+          </div>
+        </div>
+      </section>
       {stats.isError ? (
         <ErrorState title={t('common.error_title')} body={t('common.error_body')} retryLabel={t('common.retry')} onRetry={() => void stats.refetch()} />
       ) : (

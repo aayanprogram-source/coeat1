@@ -34,6 +34,12 @@ export const restaurant = {
   'rd.onboarding.suspended_title': 'Your restaurant is suspended',
   'rd.onboarding.suspended_body': 'Contact support to resolve this.',
 
+  'rd.overview.greeting_morning': 'Good morning',
+  'rd.overview.greeting_afternoon': 'Good afternoon',
+  'rd.overview.greeting_evening': 'Good evening',
+  'rd.overview.hero_body': 'Here is how {name} is doing over the last 30 days.',
+  'rd.overview.hero_redeem': 'Redeem a code',
+  'rd.overview.hero_offers': 'Manage offers',
   'rd.overview.new_customers': 'New customers',
   'rd.overview.redemptions': 'Redemptions',
   'rd.overview.avg_bill': 'Average bill',
