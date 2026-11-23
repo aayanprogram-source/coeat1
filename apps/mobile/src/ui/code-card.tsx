@@ -51,10 +51,15 @@ export function CodeCard({ restaurantName, logoPath, discountPercent, capPaise, 
         <>
           <View style={styles.divider} />
           <View style={styles.codeRow}>
-            <AppText style={styles.code} numeric accessibilityLabel={code.split('').join(' ')}>
-              {code}
-            </AppText>
-            {qrValue ? <QRCode value={qrValue} size={88} color={colors.green900} backgroundColor={colors.surface} /> : null}
+            <View style={styles.codeBox}>
+              <AppText variant="caption" muted>
+                {t('code.your_code')}
+              </AppText>
+              <AppText style={styles.code} numeric adjustsFontSizeToFit numberOfLines={1} accessibilityLabel={code.split('').join(' ')}>
+                {code}
+              </AppText>
+            </View>
+            {qrValue ? <QRCode value={qrValue} size={84} color={colors.ink} backgroundColor={colors.surface} /> : null}
           </View>
         </>
       ) : null}
@@ -87,8 +92,9 @@ const styles = StyleSheet.create({
   logo: { width: 40, height: 40, borderRadius: radius.image },
   flex: { flex: 1 },
   divider: { borderTopWidth: 1, borderStyle: 'dashed', borderColor: colors.line, marginVertical: 8 },
-  codeRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
-  code: { fontFamily: 'BricolageGrotesque_800ExtraBold', fontSize: 44, letterSpacing: 12, color: colors.green900 },
+  codeRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 8 },
+  codeBox: { flex: 1, gap: 2, paddingRight: 12 },
+  code: { fontFamily: 'BricolageGrotesque_800ExtraBold', fontSize: 38, lineHeight: 44, letterSpacing: 5, color: colors.green900 },
   counter: { gap: 4, marginTop: 8 },
   footer: { flexDirection: 'row', alignItems: 'center', marginTop: 4 },
 });

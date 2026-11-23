@@ -40,7 +40,7 @@ export function AppGate({ children }: { children: ReactNode }) {
       if (!inAuth || (screen !== 'profile-setup' && screen !== 'permissions')) router.replace('/profile-setup');
       return;
     }
-    if (inAuth && screen !== 'permissions') router.replace('/');
+    if (inAuth && screen !== 'permissions' && screen !== 'invite') router.replace('/');
   }, [loading, session, profile, inAuth, screen, router]);
 
   useEffect(() => {

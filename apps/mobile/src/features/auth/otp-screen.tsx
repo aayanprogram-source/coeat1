@@ -7,7 +7,7 @@ import { AppText } from '@/ui/app-text';
 import { Button } from '@/ui/button';
 import { haptic } from '@/ui/haptics';
 import { OtpField } from '@/ui/otp-field';
-import { Screen } from '@/ui/screen';
+import { AuthHero } from './auth-hero';
 
 const RESEND_SECONDS = 30;
 
@@ -44,7 +44,7 @@ export function OtpScreen() {
   };
 
   return (
-    <Screen>
+    <AuthHero>
       <View style={styles.gap}>
         <AppText variant="h1">{t('onboarding.otp_title')}</AppText>
         <AppText muted>{t('onboarding.otp_body', { phone })}</AppText>
@@ -60,7 +60,7 @@ export function OtpScreen() {
       {failed ? <AppText color="#C62828" accessibilityRole="alert">{t('onboarding.otp_wrong')}</AppText> : null}
       <Button label={t('common.confirm')} disabled={code.length !== 6} loading={busy} onPress={() => void verify(code)} />
       <Button variant="ghost" label={wait > 0 ? t('onboarding.otp_resend_in', { seconds: wait }) : t('onboarding.otp_resend')} disabled={wait > 0} onPress={() => void resend()} />
-    </Screen>
+    </AuthHero>
   );
 }
 

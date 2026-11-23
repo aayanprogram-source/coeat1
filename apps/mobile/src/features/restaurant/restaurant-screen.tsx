@@ -47,7 +47,7 @@ export function RestaurantScreen() {
 
   return (
     <Screen edges={['left', 'right']}>
-      {cover ? <Image source={{ uri: cover }} style={styles.cover} contentFit="cover" /> : <PhotoFallback name={data?.restaurant.name ?? '?'} seed={id ?? ''} style={styles.cover} />}
+      {cover ? <Image source={{ uri: cover }} style={styles.cover} contentFit="cover" /> : <PhotoFallback name={data?.restaurant.name ?? '?'} seed={id} style={styles.cover} />}
       {!data ? (
         <Skeleton height={200} />
       ) : (

@@ -25,7 +25,7 @@ export function PermissionsScreen() {
 
   const finish = async () => {
     await refreshProfile();
-    router.replace('/');
+    router.replace('/invite');
   };
 
   const allowContacts = async () => {

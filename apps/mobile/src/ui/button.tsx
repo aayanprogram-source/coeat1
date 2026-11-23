@@ -40,10 +40,10 @@ export function Button({ label, onPress, variant = 'primary', loading = false, d
       disabled={inactive}
       onPress={onPress}
       onPressIn={() => {
-        scale.value = withSpring(0.97, { damping: 18, stiffness: 320 });
+        scale.set(withSpring(0.97, { damping: 18, stiffness: 320 }));
       }}
       onPressOut={() => {
-        scale.value = withSpring(1, { damping: 14, stiffness: 260 });
+        scale.set(withSpring(1, { damping: 14, stiffness: 260 }));
       }}
       style={[
         styles.base,

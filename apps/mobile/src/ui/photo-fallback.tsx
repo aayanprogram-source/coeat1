@@ -1,6 +1,7 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import { StyleSheet, View, type ViewStyle } from 'react-native';
 import { AppText } from './app-text';
+import { hashOf } from './hash';
 
 const pairs: [string, string][] = [
   ['#FF9A6B', '#E8512F'],
@@ -12,7 +13,7 @@ const pairs: [string, string][] = [
 
 /** Shown in place of a photo that has not been uploaded: a warm gradient with the name's initial. */
 export function PhotoFallback({ name, seed, style }: { name: string; seed: string; style?: ViewStyle }) {
-  const pair = pairs[[...seed].reduce((n, c) => n + c.charCodeAt(0), 0) % pairs.length] ?? pairs[0] ?? ['#FF9A6B', '#E8512F'];
+  const pair = pairs[hashOf(seed) % pairs.length] ?? ['#FF9A6B', '#E8512F'];
   return (
     <View style={[styles.wrap, style]} accessibilityElementsHidden>
       <LinearGradient colors={pair} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={StyleSheet.absoluteFill} />
