@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
-import { Fraunces_600SemiBold } from '@expo-google-fonts/fraunces';
-import { Inter_400Regular, Inter_500Medium, Inter_600SemiBold, useFonts } from '@expo-google-fonts/inter';
+import { BricolageGrotesque_700Bold, BricolageGrotesque_800ExtraBold } from '@expo-google-fonts/bricolage-grotesque';
+import { PlusJakartaSans_400Regular, PlusJakartaSans_500Medium, PlusJakartaSans_600SemiBold, PlusJakartaSans_700Bold, useFonts } from '@expo-google-fonts/plus-jakarta-sans';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
@@ -18,7 +18,7 @@ void SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [client] = useState(() => new QueryClient({ defaultOptions: { queries: { staleTime: 15_000, retry: 2, retryDelay: (n) => Math.min(1000 * 2 ** n, 15_000) } } }));
-  const [loaded] = useFonts({ Fraunces_600SemiBold, Inter_400Regular, Inter_500Medium, Inter_600SemiBold });
+  const [loaded] = useFonts({ BricolageGrotesque_700Bold, BricolageGrotesque_800ExtraBold, PlusJakartaSans_400Regular, PlusJakartaSans_500Medium, PlusJakartaSans_600SemiBold, PlusJakartaSans_700Bold });
   if (!loaded) return null;
 
   return (
@@ -30,7 +30,7 @@ export default function RootLayout() {
               <ToastProvider>
                 <StatusBar style="dark" />
                 <AppGate>
-                  <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.background } }}>
+                  <Stack screenOptions={{ headerShown: false, animation: 'fade_from_bottom', animationDuration: 220, contentStyle: { backgroundColor: colors.background } }}>
                     <Stack.Screen name="story/[id]" options={{ presentation: 'fullScreenModal', animation: 'fade' }} />
                     <Stack.Screen name="create" options={{ presentation: 'modal' }} />
                     <Stack.Screen name="code/[id]" options={{ presentation: 'modal' }} />

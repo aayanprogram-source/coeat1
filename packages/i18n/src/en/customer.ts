@@ -1,6 +1,10 @@
 export const customer = {
   'onboarding.get_started': 'Get started',
   'onboarding.skip': 'Skip',
+  'onboarding.tagline': 'Eat out with friends. Share the table. Save together.',
+  'onboarding.hero_1': 'Discover where friends eat',
+  'onboarding.hero_2': 'Get a code, pay less',
+  'onboarding.hero_3': 'Earn rewards when friends join',
   'onboarding.phone_title': 'Your mobile number',
   'onboarding.phone_body': 'We will send a one-time code by SMS.',
   'onboarding.phone_placeholder': '10-digit mobile number',

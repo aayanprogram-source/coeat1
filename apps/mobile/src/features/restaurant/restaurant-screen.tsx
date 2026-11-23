@@ -15,6 +15,7 @@ import { ErrorState } from '@/ui/error-state';
 import { RatingStars } from '@/ui/rating-stars';
 import { Screen } from '@/ui/screen';
 import { Skeleton } from '@/ui/skeleton';
+import { PhotoFallback } from '@/ui/photo-fallback';
 import { publicUrl } from '@/ui/storage-url';
 
 interface Page {
@@ -46,7 +47,7 @@ export function RestaurantScreen() {
 
   return (
     <Screen edges={['left', 'right']}>
-      {cover ? <Image source={{ uri: cover }} style={styles.cover} contentFit="cover" /> : <View style={[styles.cover, { backgroundColor: colors.mint100 }]} />}
+      {cover ? <Image source={{ uri: cover }} style={styles.cover} contentFit="cover" /> : <PhotoFallback name={data?.restaurant.name ?? '?'} seed={id ?? ''} style={styles.cover} />}
       {!data ? (
         <Skeleton height={200} />
       ) : (
@@ -109,7 +110,7 @@ export function RestaurantScreen() {
 }
 
 const styles = StyleSheet.create({
-  cover: { width: '100%', height: 200, marginHorizontal: -16, marginTop: -16 },
+  cover: { width: '100%', height: 200, marginHorizontal: -20, marginTop: -12 },
   gap: { gap: 8 },
   row: { flexDirection: 'row', alignItems: 'center', gap: 12 },
   flex: { flex: 1 },

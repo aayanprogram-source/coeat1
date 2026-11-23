@@ -11,12 +11,12 @@ export function Tabs({ items, defaultValue }: { items: TabItem[]; defaultValue?:
   const first = items[0]?.value;
   return (
     <RadixTabs.Root defaultValue={defaultValue ?? first} className="flex flex-col gap-4">
-      <RadixTabs.List className="flex gap-1 overflow-x-auto border-b border-line">
+      <RadixTabs.List className="inline-flex w-fit max-w-full gap-1 overflow-x-auto rounded-2xl bg-ink/[0.05] p-1">
         {items.map((t) => (
           <RadixTabs.Trigger
             key={t.value}
             value={t.value}
-            className="min-h-[44px] whitespace-nowrap border-b-2 border-transparent px-4 text-body text-muted data-[state=active]:border-saffron-500 data-[state=active]:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-green-700"
+            className="min-h-[40px] whitespace-nowrap rounded-xl px-4 text-[14px] font-semibold text-muted transition duration-base hover:text-ink data-[state=active]:bg-surface data-[state=active]:text-ink data-[state=active]:shadow-low focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
           >
             {t.label}
           </RadixTabs.Trigger>

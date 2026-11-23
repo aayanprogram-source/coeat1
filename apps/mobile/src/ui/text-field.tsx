@@ -1,4 +1,4 @@
-import { forwardRef } from 'react';
+import { forwardRef, useState } from 'react';
 import { StyleSheet, TextInput, View, type TextInputProps } from 'react-native';
 import { colors, radius, type as typography } from '@/lib/theme';
 import { AppText } from './app-text';
@@ -9,7 +9,8 @@ export interface TextFieldProps extends TextInputProps {
   hint?: string | undefined;
 }
 
-export const TextField = forwardRef<TextInput, TextFieldProps>(function TextField({ label, error, hint, style, ...rest }, ref) {
+export const TextField = forwardRef<TextInput, TextFieldProps>(function TextField({ label, error, hint, style, onFocus, onBlur, ...rest }, ref) {
+  const [focused, setFocused] = useState(false);
   return (
     <View style={styles.wrap}>
       <AppText variant="label">{label}</AppText>
@@ -17,7 +18,15 @@ export const TextField = forwardRef<TextInput, TextFieldProps>(function TextFiel
         ref={ref}
         accessibilityLabel={label}
         placeholderTextColor={colors.muted}
-        style={[styles.input, error ? styles.invalid : null, style]}
+        style={[styles.input, focused ? styles.focused : null, error ? styles.invalid : null, style]}
+        onFocus={(e) => {
+          setFocused(true);
+          onFocus?.(e);
+        }}
+        onBlur={(e) => {
+          setFocused(false);
+          onBlur?.(e);
+        }}
         {...rest}
       />
       {error ? (
@@ -35,6 +44,7 @@ export const TextField = forwardRef<TextInput, TextFieldProps>(function TextFiel
 
 const styles = StyleSheet.create({
   wrap: { gap: 6 },
-  input: { ...typography.body, minHeight: 48, borderRadius: radius.button, borderWidth: 1, borderColor: colors.line, backgroundColor: colors.surface, paddingHorizontal: 14, color: colors.ink },
+  input: { ...typography.body, minHeight: 54, borderRadius: radius.input, borderWidth: 1.5, borderColor: colors.line, backgroundColor: colors.surface, paddingHorizontal: 16, color: colors.ink },
+  focused: { borderColor: colors.green900 },
   invalid: { borderColor: colors.danger },
 });

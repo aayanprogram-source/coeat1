@@ -63,9 +63,19 @@ export function FeedScreen() {
     <SafeAreaView style={styles.root} edges={['top']}>
       <OfflineBanner />
       <View style={styles.header}>
-        <AppText variant="h1">{settings.text('product_name')}</AppText>
+        <View>
+          <AppText variant="caption" muted>
+            {profile?.name ? `Hi ${profile.name.split(' ')[0] ?? ''}` : ''}
+          </AppText>
+          <AppText variant="display" style={styles.brand}>
+            {settings.text('product_name')}
+            <AppText variant="display" color={colors.green900} style={styles.brand}>
+              .
+            </AppText>
+          </AppText>
+        </View>
         <Pressable accessibilityRole="button" accessibilityLabel={t('notifications.title')} onPress={() => router.push('/notifications')} style={styles.bell}>
-          <Bell size={24} color={colors.ink} />
+          <Bell size={21} color={colors.ink} strokeWidth={2} />
         </Pressable>
       </View>
       <View style={styles.filters}>
@@ -118,9 +128,10 @@ export function FeedScreen() {
 
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.background },
-  header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: pageMargin, paddingTop: 8 },
-  bell: { minWidth: 44, minHeight: 44, alignItems: 'center', justifyContent: 'center' },
+  header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: pageMargin, paddingTop: 10 },
+  bell: { width: 46, height: 46, borderRadius: 23, backgroundColor: colors.surface, alignItems: 'center', justifyContent: 'center', shadowColor: '#361F10', shadowOpacity: 0.1, shadowRadius: 10, shadowOffset: { width: 0, height: 4 }, elevation: 3 },
+  brand: { fontSize: 32, lineHeight: 36 },
   filters: { flexDirection: 'row', gap: 8, paddingHorizontal: pageMargin, paddingVertical: 12 },
   list: { paddingHorizontal: pageMargin, paddingBottom: 32, flexGrow: 1 },
-  sep: { gap: 16 },
+  sep: { gap: 18 },
 });

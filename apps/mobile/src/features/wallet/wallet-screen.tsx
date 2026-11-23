@@ -62,7 +62,7 @@ export function WalletScreen() {
 
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.background },
-  head: { paddingHorizontal: pageMargin, paddingTop: 8, gap: 12 },
+  head: { paddingHorizontal: pageMargin, paddingTop: 10, paddingBottom: 6, gap: 14 },
   row: { flexDirection: 'row', gap: 8 },
-  list: { padding: pageMargin, gap: 16 },
+  list: { padding: pageMargin, gap: 18, paddingBottom: 40 },
 });

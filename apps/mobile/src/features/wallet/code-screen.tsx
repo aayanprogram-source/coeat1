@@ -65,5 +65,5 @@ export function CodeScreen() {
 const styles = StyleSheet.create({
   center: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 12 },
   qr: { padding: 16, backgroundColor: '#FFFFFF', borderRadius: 16, borderWidth: 1, borderColor: colors.line },
-  code: { fontFamily: 'Fraunces_600SemiBold', fontSize: 64, letterSpacing: 16, color: '#000000' },
+  code: { fontFamily: 'BricolageGrotesque_800ExtraBold', fontSize: 64, letterSpacing: 16, color: '#000000' },
 });

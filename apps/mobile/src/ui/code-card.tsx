@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
   flex: { flex: 1 },
   divider: { borderTopWidth: 1, borderStyle: 'dashed', borderColor: colors.line, marginVertical: 8 },
   codeRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
-  code: { fontFamily: 'Fraunces_600SemiBold', fontSize: 44, letterSpacing: 12, color: colors.green900 },
+  code: { fontFamily: 'BricolageGrotesque_800ExtraBold', fontSize: 44, letterSpacing: 12, color: colors.green900 },
   counter: { gap: 4, marginTop: 8 },
   footer: { flexDirection: 'row', alignItems: 'center', marginTop: 4 },
 });

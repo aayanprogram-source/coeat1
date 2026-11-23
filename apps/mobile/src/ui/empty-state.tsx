@@ -16,7 +16,7 @@ export function EmptyState({ icon: Icon, title, body, actionLabel, onAction }: E
   return (
     <View style={styles.wrap}>
       <View style={styles.badge}>
-        <Icon size={28} color={colors.green900} />
+        <Icon size={30} color={colors.green900} strokeWidth={1.75} />
       </View>
       <AppText variant="h2" style={styles.center}>
         {title}
@@ -31,6 +31,6 @@ export function EmptyState({ icon: Icon, title, body, actionLabel, onAction }: E
 
 const styles = StyleSheet.create({
   wrap: { alignItems: 'center', gap: 12, padding: 32 },
-  badge: { width: 64, height: 64, borderRadius: 32, backgroundColor: colors.mint100, alignItems: 'center', justifyContent: 'center' },
+  badge: { width: 76, height: 76, borderRadius: 38, backgroundColor: colors.mint100, alignItems: 'center', justifyContent: 'center' },
   center: { textAlign: 'center' },
 });

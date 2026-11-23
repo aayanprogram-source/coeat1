@@ -50,5 +50,5 @@ export function PhoneScreen() {
 
 const styles = StyleSheet.create({
   gap: { gap: 8 },
-  notice: { backgroundColor: colors.mint100, borderRadius: 12, padding: 12 },
+  notice: { backgroundColor: colors.mint100, borderRadius: 16, padding: 14 },
 });

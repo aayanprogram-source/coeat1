@@ -9,6 +9,7 @@ import { Avatar } from '@/ui/avatar';
 import { Chip } from '@/ui/chip';
 import { CodeCard } from '@/ui/code-card';
 import { RatingStars } from '@/ui/rating-stars';
+import { PhotoFallback } from '@/ui/photo-fallback';
 import { publicUrl } from '@/ui/storage-url';
 
 export interface StoryCardProps {
@@ -27,7 +28,7 @@ export function StoryCard({ story, onOpen, onShare }: StoryCardProps) {
   return (
     <View style={styles.card}>
       <Pressable accessibilityRole="button" accessibilityLabel={t('feed.open_story', { name: story.author.name ?? '' })} onPress={() => onOpen(story.id)}>
-        {photo ? <Image source={{ uri: photo }} style={styles.photo} contentFit="cover" transition={200} /> : <View style={[styles.photo, styles.placeholder]} />}
+        {photo ? <Image source={{ uri: photo }} style={styles.photo} contentFit="cover" transition={200} /> : <PhotoFallback name={story.restaurant.name} seed={story.restaurant.id} style={styles.photo} />}
       </Pressable>
       <View style={styles.body}>
         <View style={styles.row}>
@@ -84,8 +85,8 @@ export function StoryCard({ story, onOpen, onShare }: StoryCardProps) {
 }
 
 const styles = StyleSheet.create({
-  card: { backgroundColor: colors.surface, borderRadius: radius.card, overflow: 'hidden', ...elevation.low },
-  photo: { width: '100%', aspectRatio: 4 / 5 },
+  card: { backgroundColor: colors.surface, borderRadius: radius.card, overflow: 'hidden', ...elevation.mid },
+  photo: { width: '100%', aspectRatio: 1 },
   placeholder: { backgroundColor: colors.mint100 },
   body: { padding: 16, gap: 12 },
   row: { flexDirection: 'row', alignItems: 'center', gap: 10 },

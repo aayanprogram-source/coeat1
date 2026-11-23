@@ -7,5 +7,5 @@ export function Card({ children, style }: { children: ReactNode; style?: ViewSty
 }
 
 const styles = StyleSheet.create({
-  card: { backgroundColor: colors.surface, borderRadius: radius.card, borderWidth: StyleSheet.hairlineWidth, borderColor: colors.line, padding: 16, ...elevation.low },
+  card: { backgroundColor: colors.surface, borderRadius: radius.card, borderWidth: StyleSheet.hairlineWidth, borderColor: colors.line, padding: 18, ...elevation.low },
 });

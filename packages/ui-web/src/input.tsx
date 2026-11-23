@@ -2,13 +2,13 @@ import { forwardRef, type InputHTMLAttributes, type SelectHTMLAttributes, type T
 import { cn } from './cn';
 
 const field =
-  'w-full rounded-input border border-line bg-surface px-3 text-body text-ink placeholder:text-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-green-700 aria-[invalid=true]:border-danger disabled:bg-background disabled:text-muted';
+  'w-full rounded-input border border-line bg-surface px-3.5 text-[15px] text-ink shadow-low transition duration-base placeholder:text-muted/70 hover:border-ink/25 focus-visible:border-primary focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-primary/20 aria-[invalid=true]:border-danger disabled:bg-background disabled:text-muted';
 
 export const Input = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputElement>>(function Input(
   { className, ...rest },
   ref,
 ) {
-  return <input ref={ref} className={cn(field, 'min-h-[44px]', className)} {...rest} />;
+  return <input ref={ref} className={cn(field, 'min-h-[48px]', className)} {...rest} />;
 });
 
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaHTMLAttributes<HTMLTextAreaElement>>(function Textarea(

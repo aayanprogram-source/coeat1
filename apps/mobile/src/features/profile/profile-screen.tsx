@@ -40,7 +40,7 @@ export function ProfileScreen() {
   return (
     <Screen>
       <View style={styles.head}>
-        {profile ? <Avatar person={{ id: profile.id, name: profile.name, avatar_path: profile.avatar_path }} size={64} /> : null}
+        {profile ? <Avatar person={{ id: profile.id, name: profile.name, avatar_path: profile.avatar_path }} size={72} /> : null}
         <View style={styles.flex}>
           <AppText variant="h1">{profile?.name}</AppText>
           <AppText muted>@{profile?.handle}</AppText>
@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
   head: { flexDirection: 'row', alignItems: 'center', gap: 14 },
   flex: { flex: 1 },
   icon: { minWidth: 44, minHeight: 44, alignItems: 'center', justifyContent: 'center' },
-  stats: { flexDirection: 'row', justifyContent: 'space-around' },
+  stats: { flexDirection: 'row', justifyContent: 'space-around', paddingVertical: 22 },
   stat: { alignItems: 'center' },
   links: { flexDirection: 'row', gap: 8, flexWrap: 'wrap' },
   section: { gap: 10 },

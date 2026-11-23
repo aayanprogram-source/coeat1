@@ -8,6 +8,7 @@ import { call } from '@/lib/rpc';
 import { colors, elevation, radius } from '@/lib/theme';
 import { AppText } from '@/ui/app-text';
 import { Chip } from '@/ui/chip';
+import { PhotoFallback } from '@/ui/photo-fallback';
 import { publicUrl } from '@/ui/storage-url';
 
 /** A restaurant's paid placement. It is labelled, looks like a restaurant offer card, and never like a friend's story. */
@@ -25,7 +26,7 @@ export function SponsoredCard({ card }: { card: Card }) {
       }}
       style={styles.card}
     >
-      {cover ? <Image source={{ uri: cover }} style={styles.cover} contentFit="cover" /> : <View style={[styles.cover, { backgroundColor: colors.mint100 }]} />}
+      {cover ? <Image source={{ uri: cover }} style={styles.cover} contentFit="cover" /> : <PhotoFallback name={card.restaurant.name} seed={card.restaurant.id} style={styles.cover} />}
       <View style={styles.body}>
         <Chip label={card.label} />
         <AppText variant="h2">{card.restaurant.name}</AppText>
@@ -38,7 +39,7 @@ export function SponsoredCard({ card }: { card: Card }) {
 }
 
 const styles = StyleSheet.create({
-  card: { backgroundColor: colors.surface, borderRadius: radius.card, overflow: 'hidden', borderWidth: 1, borderColor: colors.saffron500, ...elevation.low },
-  cover: { width: '100%', height: 140 },
+  card: { backgroundColor: colors.surface, borderRadius: radius.card, overflow: 'hidden', ...elevation.mid },
+  cover: { width: '100%', height: 168 },
   body: { padding: 16, gap: 6, alignItems: 'flex-start' },
 });

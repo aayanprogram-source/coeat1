@@ -12,11 +12,11 @@ export const spacing = {
   16: 64,
 } as const;
 
-export const radius = { card: 16, button: 12, chip: 9999, sheet: 24, input: 12, image: 12 } as const;
+export const radius = { card: 22, button: 16, chip: 9999, sheet: 28, input: 14, image: 16 } as const;
 
 export const shadows = {
-  low: { color: 'rgba(15,61,62,0.06)', x: 0, y: 1, blur: 2 },
-  mid: { color: 'rgba(15,61,62,0.10)', x: 0, y: 6, blur: 16 },
+  low: { color: 'rgba(54,32,16,0.07)', x: 0, y: 2, blur: 8 },
+  mid: { color: 'rgba(54,32,16,0.14)', x: 0, y: 12, blur: 28 },
 } as const;
 
 export const shadowCss = {

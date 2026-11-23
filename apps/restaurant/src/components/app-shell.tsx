@@ -38,8 +38,8 @@ export function AppShell({ productName, children }: { productName: string; child
               aria-current={active ? 'page' : undefined}
               onClick={() => setOpen(false)}
               className={cn(
-                'flex min-h-[44px] items-center gap-3 rounded-button px-3 text-body transition duration-fast',
-                active ? 'bg-mint-100 font-medium text-green-900' : 'text-ink hover:bg-mint-100',
+                'group flex min-h-[44px] items-center gap-3 rounded-button px-3 text-[14.5px] font-medium transition duration-base ease-out',
+                active ? 'bg-primary text-white shadow-[0_10px_24px_-8px_rgba(216,67,31,0.7)]' : 'text-white/65 hover:bg-white/10 hover:text-white',
               )}
             >
               <item.icon className="h-5 w-5" aria-hidden />
@@ -51,7 +51,7 @@ export function AppShell({ productName, children }: { productName: string; child
   );
 
   const footer = (
-    <div className="flex flex-col gap-2 border-t border-line pt-4">
+    <div className="flex flex-col gap-2 border-t border-white/10 pt-4">
       {restaurants.length > 1 ? (
         <Select aria-label={t('rd.shell.switch')} value={restaurant.id} onChange={(e) => select(e.target.value)}>
           {restaurants.map((r) => (
@@ -61,9 +61,9 @@ export function AppShell({ productName, children }: { productName: string; child
           ))}
         </Select>
       ) : (
-        <p className="truncate px-3 text-caption text-muted">{restaurant.name}</p>
+        <p className="truncate px-3 text-caption text-white/60">{restaurant.name}</p>
       )}
-      <Button variant="ghost" icon={<LogOut className="h-4 w-4" aria-hidden />} onClick={() => void signOut()}>
+      <Button variant="ghost" className="justify-start text-white/80 hover:bg-white/10" icon={<LogOut className="h-4 w-4" aria-hidden />} onClick={() => void signOut()}>
         {t('common.sign_out')}
       </Button>
     </div>
@@ -71,27 +71,30 @@ export function AppShell({ productName, children }: { productName: string; child
 
   return (
     <div className="min-h-screen md:grid md:grid-cols-[248px_1fr]">
-      <aside className="hidden border-r border-line bg-surface p-4 md:flex md:flex-col md:justify-between">
+      <aside className="sticky top-0 hidden h-screen overflow-y-auto bg-ink p-5 text-white md:flex md:flex-col md:justify-between">
         <div className="flex flex-col gap-6">
-          <p className="px-3 font-heading text-h2 font-semibold text-green-900">{productName}</p>
+          <div className="flex items-center gap-3 px-2">
+            <span className="grid h-10 w-10 place-items-center rounded-2xl bg-primary font-heading text-xl font-extrabold text-white shadow-[0_8px_20px_-6px_rgba(216,67,31,0.8)]">{productName.slice(0, 1).toUpperCase()}</span>
+            <p className="font-heading text-xl font-bold tracking-tight">{productName}</p>
+          </div>
           {nav}
         </div>
         {footer}
       </aside>
       <div className="min-w-0">
-        <div className="flex items-center justify-between border-b border-line bg-surface px-4 py-2 md:hidden">
-          <p className="font-heading text-h2 font-semibold text-green-900">{productName}</p>
-          <Button variant="ghost" aria-label={open ? t('common.close') : t('sa.nav.menu')} aria-expanded={open} onClick={() => setOpen(!open)}>
+        <div className="flex items-center justify-between bg-ink px-4 py-2 text-white md:hidden">
+          <p className="font-heading text-xl font-bold tracking-tight">{productName}</p>
+          <Button variant="ghost" className="text-white hover:bg-white/10" aria-label={open ? t('common.close') : t('sa.nav.menu')} aria-expanded={open} onClick={() => setOpen(!open)}>
             {open ? <X className="h-5 w-5" aria-hidden /> : <Menu className="h-5 w-5" aria-hidden />}
           </Button>
         </div>
         {open ? (
-          <div className="flex flex-col gap-4 border-b border-line bg-surface p-4 md:hidden">
+          <div className="flex flex-col gap-4 bg-ink p-4 text-white md:hidden">
             {nav}
             {footer}
           </div>
         ) : null}
-        <main className="mx-auto w-full max-w-[1200px] px-4 py-6 md:px-8">{children}</main>
+        <main className="page-enter mx-auto w-full max-w-[1240px] px-4 py-8 md:px-10 md:py-10">{children}</main>
       </div>
     </div>
   );

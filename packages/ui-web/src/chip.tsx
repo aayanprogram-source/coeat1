@@ -4,17 +4,17 @@ import { cn } from './cn';
 export type ChipTone = 'neutral' | 'success' | 'warning' | 'danger' | 'info';
 
 const tones: Record<ChipTone, string> = {
-  neutral: 'bg-background text-muted border-line',
-  success: 'bg-mint-100 text-success border-transparent',
+  neutral: 'bg-ink/5 text-muted border-transparent',
+  success: 'bg-[#DDF3E8] text-success border-transparent',
   warning: 'bg-[#FFF3D6] text-[#7A5200] border-transparent',
   danger: 'bg-[#FDE7E7] text-danger border-transparent',
-  info: 'bg-mint-100 text-green-900 border-transparent',
+  info: 'bg-mint-100 text-green-700 border-transparent',
 };
 
 export function Chip({ tone = 'neutral', className, ...rest }: HTMLAttributes<HTMLSpanElement> & { tone?: ChipTone }) {
   return (
     <span
-      className={cn('inline-flex items-center rounded-chip border px-3 py-0.5 text-caption font-medium', tones[tone], className)}
+      className={cn('inline-flex items-center rounded-chip border px-3 py-1 text-[12.5px] font-semibold capitalize', tones[tone], className)}
       {...rest}
     />
   );

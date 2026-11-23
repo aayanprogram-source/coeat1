@@ -19,14 +19,14 @@ export function DataTable<T>({ columns, rows, loading = false, empty, caption, o
   if (!loading && rows.length === 0) return <>{empty}</>;
 
   return (
-    <div className="overflow-x-auto rounded-card border border-line bg-surface">
+    <div className="overflow-x-auto rounded-card border border-line/70 bg-surface shadow-low">
       <table className="w-full border-collapse text-left text-body">
         <caption className="sr-only">{caption}</caption>
-        <thead className="bg-background text-caption text-muted">
+        <thead className="bg-background text-[12.5px] uppercase tracking-wide text-muted">
           {table.getHeaderGroups().map((group) => (
             <tr key={group.id}>
               {group.headers.map((header) => (
-                <th key={header.id} scope="col" className="whitespace-nowrap px-4 py-3 font-medium">
+                <th key={header.id} scope="col" className="whitespace-nowrap px-5 py-3.5 font-semibold">
                   {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                 </th>
               ))}
@@ -45,11 +45,11 @@ export function DataTable<T>({ columns, rows, loading = false, empty, caption, o
             : table.getRowModel().rows.map((row) => (
                 <tr
                   key={row.id}
-                  className={`border-t border-line ${onRowClick ? 'cursor-pointer hover:bg-mint-100' : ''}`}
+                  className={`border-t border-line/70 transition duration-fast ${onRowClick ? 'cursor-pointer hover:bg-mint-100/70' : 'hover:bg-background'}`}
                   onClick={onRowClick ? () => onRowClick(row.original) : undefined}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <td key={cell.id} className="px-4 py-3 align-middle tabular-nums">
+                    <td key={cell.id} className="px-5 py-4 align-middle tabular-nums">
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </td>
                   ))}

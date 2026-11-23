@@ -15,6 +15,7 @@ import { Chip } from '@/ui/chip';
 import { EmptyState } from '@/ui/empty-state';
 import { ErrorState } from '@/ui/error-state';
 import { OfflineBanner } from '@/ui/offline-banner';
+import { PhotoFallback } from '@/ui/photo-fallback';
 import { Skeleton } from '@/ui/skeleton';
 import { TextField } from '@/ui/text-field';
 import { SponsoredCard } from '../feed/sponsored-card';
@@ -75,6 +76,7 @@ export function ExploreScreen() {
                 {results.data?.sponsored.map((s) => <SponsoredCard key={s.placement_id} card={s} />)}
                 {results.data?.items.map((r) => (
                   <Pressable key={r.id} accessibilityRole="button" accessibilityLabel={r.name} onPress={() => router.push(`/restaurant/${r.id}`)} style={styles.card}>
+                    <PhotoFallback name={r.name} seed={r.id} style={styles.thumb} />
                     <View style={styles.flex}>
                       <AppText variant="h2">{r.name}</AppText>
                       <AppText variant="caption" muted numeric>
@@ -87,7 +89,13 @@ export function ExploreScreen() {
                         </AppText>
                       ) : null}
                     </View>
-                    {r.avg_rating ? <AppText variant="label" numeric>{r.avg_rating.toFixed(1)}</AppText> : null}
+                    {r.avg_rating ? (
+                      <View style={styles.rating}>
+                        <AppText variant="label" color="#FFFFFF" numeric>
+                          {r.avg_rating.toFixed(1)}
+                        </AppText>
+                      </View>
+                    ) : null}
                   </Pressable>
                 ))}
                 {results.data?.items.length === 0 ? <EmptyState icon={Compass} title={t('explore.empty_title')} body={t('explore.empty_body')} /> : null}
@@ -106,5 +114,7 @@ const styles = StyleSheet.create({
   flex: { flex: 1 },
   toggle: { minWidth: 44, minHeight: 44, alignItems: 'center', justifyContent: 'center' },
   chips: { gap: 8 },
-  card: { flexDirection: 'row', alignItems: 'center', gap: 12, backgroundColor: colors.surface, borderRadius: radius.card, padding: 16, borderWidth: StyleSheet.hairlineWidth, borderColor: colors.line, minHeight: 72 },
+  card: { flexDirection: 'row', alignItems: 'center', gap: 12, backgroundColor: colors.surface, borderRadius: radius.card, borderWidth: StyleSheet.hairlineWidth, borderColor: colors.line, minHeight: 88, padding: 12, shadowColor: '#361F10', shadowOpacity: 0.07, shadowRadius: 8, shadowOffset: { width: 0, height: 2 }, elevation: 1 },
+  thumb: { width: 64, height: 64, borderRadius: 16 },
+  rating: { backgroundColor: colors.success, borderRadius: 10, paddingHorizontal: 9, paddingVertical: 4 },
 });

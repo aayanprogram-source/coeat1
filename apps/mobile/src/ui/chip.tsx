@@ -8,10 +8,10 @@ export function Chip({ label, selected = false, onPress }: { label: string; sele
       accessibilityRole={onPress ? 'button' : 'text'}
       accessibilityState={{ selected }}
       onPress={onPress}
-      style={[styles.chip, selected ? styles.selected : null]}
+      style={({ pressed }) => [styles.chip, selected ? styles.selected : null, pressed ? { opacity: 0.8 } : null]}
       hitSlop={{ top: 6, bottom: 6 }}
     >
-      <AppText variant="label" color={selected ? colors.surface : colors.ink}>
+      <AppText variant="label" color={selected ? '#FFFFFF' : colors.ink} style={styles.text}>
         {label}
       </AppText>
     </Pressable>
@@ -19,6 +19,7 @@ export function Chip({ label, selected = false, onPress }: { label: string; sele
 }
 
 const styles = StyleSheet.create({
-  chip: { minHeight: 36, borderRadius: radius.chip, borderWidth: 1, borderColor: colors.line, backgroundColor: colors.surface, paddingHorizontal: 14, justifyContent: 'center' },
-  selected: { backgroundColor: colors.green900, borderColor: colors.green900 },
+  chip: { minHeight: 38, borderRadius: radius.chip, borderWidth: 1, borderColor: colors.line, backgroundColor: colors.surface, paddingHorizontal: 16, justifyContent: 'center' },
+  selected: { backgroundColor: colors.ink, borderColor: colors.ink },
+  text: { fontSize: 13.5 },
 });

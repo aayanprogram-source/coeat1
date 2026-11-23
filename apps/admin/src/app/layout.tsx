@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Fraunces, Inter } from 'next/font/google';
+import { Bricolage_Grotesque, Plus_Jakarta_Sans } from 'next/font/google';
 import { headers } from 'next/headers';
 import type { ReactNode } from 'react';
 import { settingString } from '@datapal/core';
@@ -7,8 +7,8 @@ import { fetchAppConfig } from '@datapal/web-kit/config';
 import { DashboardProviders } from '@datapal/web-kit/providers';
 import './globals.css';
 
-const heading = Fraunces({ subsets: ['latin'], weight: ['600'], variable: '--font-heading', display: 'swap' });
-const body = Inter({ subsets: ['latin'], variable: '--font-body', display: 'swap' });
+const heading = Bricolage_Grotesque({ subsets: ['latin'], weight: ['600', '700', '800'], variable: '--font-heading', display: 'swap' });
+const body = Plus_Jakarta_Sans({ subsets: ['latin'], weight: ['400', '500', '600', '700'], variable: '--font-body', display: 'swap' });
 
 export const viewport: Viewport = { width: 'device-width', initialScale: 1 };
 
